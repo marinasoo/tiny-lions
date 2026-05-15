@@ -1,0 +1,91 @@
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #faf7f1;
+  color: #2f241d;
+}
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.card {
+  background: white;
+  width: 100%;
+  max-width: 600px;
+  padding: 28px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+h1 {
+  margin-bottom: 4px;
+}
+
+p {
+  color: #6b5f56;
+}
+
+form {
+  display: grid;
+  gap: 18px;
+  margin-top: 24px;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+  font-weight: bold;
+}
+
+input,
+textarea {
+  font: inherit;
+  padding: 12px;
+  border: 1px solid #d8cfc5;
+  border-radius: 12px;
+}
+
+textarea {
+  min-height: 120px;
+}
+
+button {
+  background: #c86428;
+  color: white;
+  border: none;
+  border-radius: 14px;
+  padding: 14px;
+  font: inherit;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #a94f1e;
+}
+
+.field-title {
+  font-weight: bold;
+  color: #2f241d;
+  margin-bottom: 8px;
+}
+
+.checkbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: normal;
+  background: #faf7f1;
+  padding: 10px;
+  border-radius: 12px;
+}
