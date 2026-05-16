@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { supabase } from "./supabaseClient";
 
 function App() {
   const [kittenName, setKittenName] = useState("");
@@ -7,23 +8,29 @@ function App() {
   const [notes, setNotes] = useState("");
   const [behaviors, setBehaviors] = useState([]);
 
-  function handleSubmit(event) {
-    event.preventDefault();
+  async function handleSubmit(event) {
+  event.preventDefault();
 
-    const session = {
-      kittenName,
-      volunteerName,
-      notes,
-      date: new Date().toLocaleDateString(),
-      behaviors,
-    };
+  const { error } = await supabase.from("sessions").insert({
+    kitten_name: kittenName,
+    volunteer_name: volunteerName,
+    behaviors: behaviors,
+    notes: notes,
+  });
 
-    console.log("New session:", session);
-
-    setKittenName("");
-    setVolunteerName("");
-    setNotes("");
+  if (error) {
+    alert("Something went wrong. The session was not saved.");
+    console.error(error);
+    return;
   }
+
+  alert("Session saved!");
+
+  setKittenName("");
+  setVolunteerName("");
+  setBehaviors([]);
+  setNotes("");
+}
 
   const behaviorOptions = [
     "Hissing",
