@@ -55,9 +55,8 @@ function App() {
     }
   }
 
-  return (
+return (
     <main className="page">
-
       {/* Floating Decorative Background Blobs */}
       <div className="bubble bubble-1"></div>
       <div className="bubble bubble-2"></div>
@@ -68,41 +67,41 @@ function App() {
         <p>Feral kitten socialization tracker</p>
 
         <form onSubmit={handleSubmit}>
-          {/* Kitten Name Dropdown */}
-        <label>
-          Kitten name
-          <select value={kittenName} onChange={(event) => setKittenName(event.target.value)}>
-            <option value="">-- Select a Kitten --</option>
-            {kittenOptions.map(name => (
-              <option key={name} value={name}>{name}</option>
-            ))}
-          </select>
-        </label>
+          
+          {/* ROW 1: Both dropdowns side-by-side */}
+          <div className="form-top-row">
+            <label>
+              Kitten name
+              <select value={kittenName} onChange={(event) => setKittenName(event.target.value)}>
+                <option value="">-- Select a Kitten --</option>
+                {kittenOptions.map(name => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            </label>
 
-        {/* Volunteer Name Dropdown */}
-        <label>
-          Volunteer name
-          <select value={volunteerName} onChange={(event) => setVolunteerName(event.target.value)}>
-            <option value="">-- Select Your Name --</option>
-            {volunteerOptions.map(name => (
-              <option key={name} value={name}>{name}</option>
-            ))}
-          </select>
-        </label>
-          <div>
+            <label>
+              Volunteer name
+              <select value={volunteerName} onChange={(event) => setVolunteerName(event.target.value)}>
+                <option value="">-- Select Your Name --</option>
+                {volunteerOptions.map(name => (
+                  <option key={name} value={name}>{name}</option>
+                ))}
+              </select>
+            </label>
+          </div>
+
+          {/* ROW 2: Behaviors Observed Grid */}
+          <div className="form-behaviors-section">
             <p className="field-title">Behaviors observed</p>
-
             <div className="checkbox-grid">
               {behaviorOptions.map((behavior) => (
-                /* 1. We keep the unique key on the parent container */
                 <label key={behavior}>
                   <input
                     type="checkbox"
                     checked={behaviors.includes(behavior)}
                     onChange={() => toggleBehavior(behavior)}
                   />
-                  {/* 2. Giving the text its own class allows the CSS to hide the checkbox 
-                      and style this whole pill element cleanly! */}
                   <span className="checkbox-label">
                     {behavior}
                   </span>
@@ -110,6 +109,8 @@ function App() {
               ))}
             </div>
           </div>
+
+          {/* ROW 3: Notes Section */}
           <label>
             Notes
             <textarea
@@ -119,7 +120,9 @@ function App() {
             />
           </label>
 
+          {/* ROW 4: Submit Button */}
           <button type="submit">Save session</button>
+          
         </form>
       </section>
     </main>

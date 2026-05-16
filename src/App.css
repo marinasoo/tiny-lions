@@ -1,20 +1,28 @@
-/* --- Core Aesthetic Variables (Warm Minimalist Theme) --- */
+/* ==========================================================================
+   1. CORE DESIGN SYSTEM (VARIABLES)
+   ========================================================================== */
 :root {
-  --bg-gradient: linear-gradient(135deg, #fbfaf7 0%, #f3efe6 100%);
-  --card-bg: rgba(255, 255, 255, 0.85);
-  --accent-warm: #e28743;       /* Soft Terracotta */
+  --bg-gradient:radial-gradient(at 0% 0%, #e0e7ff 0px, transparent 25%),
+               radial-gradient(at 50% 0%, #fef3c7 0px, transparent 25%),
+               radial-gradient(at 100% 0%, #fae8ff 0px, transparent 36%),
+               radial-gradient(at 0% 100%, #e0f2fe 0px, transparent 42%),
+               #f8fafc;
+  --card-bg: rgba(255, 255, 255, 0.45);
+  --accent-warm: #812199;       /* Soft Terracotta */
   --accent-hover: #c96f2c;
-  --pill-selected: #fef3c7;     /* Soft buttery yellow tint */
-  --pill-selected-text: #92400e;
+  --pill-selected: #fff6d2;     /* Soft buttery yellow */
+  --pill-selected-text: #000000;
   --text-primary: #2d2a26;      /* Rich charcoal */
-  --text-muted: #736d66;
-  --border-subtle: rgba(216, 207, 197, 0.4);
+  --text-muted: #716673;
+  --border-subtle: rgba(158, 130, 156, 0.4);
   --radius-lg: 24px;
   --radius-md: 16px;
   --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
-/* --- Base Setup --- */
+/* ==========================================================================
+   2. GLOBAL BASE STYLES & LAYOUT
+   ========================================================================== */
 body {
   margin: 0;
   font-family: var(--font-stack);
@@ -22,8 +30,8 @@ body {
   color: var(--text-primary);
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden; /* Prevent horizontal scroll from floating blobs */
-  position: relative; /* Establishes a new stacking context for the blobs */
+  overflow-x: hidden;
+  position: relative;
 }
 
 .page {
@@ -33,9 +41,11 @@ body {
   align-items: center;
   padding: 40px 20px;
   box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
 }
 
-/* --- Glassmorphism App Card --- */
+/* --- Glassmorphic UI Card Container --- */
 .card {
   background: var(--card-bg);
   backdrop-filter: blur(12px);
@@ -48,19 +58,28 @@ body {
   box-shadow: 
     0 4px 30px rgba(47, 36, 29, 0.03),
     0 20px 50px rgba(47, 36, 29, 0.06);
+  position: relative;
+  z-index: 2; /* Sits crisply above the floating bubbles */
 }
 
-/* --- Typography --- */
+form {
+  display: grid;
+  gap: 24px;
+}
+
+/* ==========================================================================
+   3. TYPOGRAPHY
+   ========================================================================== */
 h1 {
-  font-size: 2.2rem;
+  font-size: 3rem;
   font-weight: 800;
   letter-spacing: -0.03em;
   margin: 0 0 8px 0;
   text-align: center;
-  background: linear-gradient(to right, #2d2a26, #736d66);
+  /*background: #c96f2c;linear-gradient(to right, #2d2a26, #736d66);
   background-clip: text;
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent;*/
 }
 
 p {
@@ -68,16 +87,20 @@ p {
   color: var(--text-muted);
   margin: 0 0 40px 0;
   text-align: center;
-  font-weight: 400;
+  font-weight: 00;
 }
 
-/* ADD THIS PIECE: */
-form {
-  display: grid;
-  gap: 24px;
+.field-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+  margin: 0 0 14px 0;
+  text-align: center;
 }
 
-/* --- Inputs, Labels & Dropdowns --- */
+/* ==========================================================================
+   4. INPUTS, LABELS & DROPDOWNS
+   ========================================================================== */
 label {
   display: grid;
   gap: 10px;
@@ -87,21 +110,22 @@ label {
   color: var(--text-primary);
 }
 
-/* Targeting select, options, inputs, textareas explicitly to kill Times New Roman */
 input, select, select option, textarea {
   font-family: var(--font-stack) !important;
   font-size: 1rem;
   padding: 16px;
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  background: rgba(255, 255, 255, 0.7);
+  background: #fbf8efac;
   color: var(--text-primary);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   box-sizing: border-box;
-  width: 100%;
+  width: 75%;
+
+  margin: 0 auto;
+  text-align: center;
 }
 
-/* Clean custom styling for the dropdown dropdown chevron trigger */
 select {
   appearance: none;
   background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23736d66' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
@@ -115,7 +139,7 @@ select {
 input:focus, select:focus, textarea:focus {
   outline: none;
   border-color: var(--accent-warm);
-  background: #ffffff;
+  background: #fffff;
   box-shadow: 0 0 0 4px rgba(226, 135, 67, 0.12);
 }
 
@@ -123,24 +147,19 @@ textarea {
   min-height: 130px;
   resize: vertical;
   line-height: 1.5;
+  width: 100%;
 }
 
-/* --- Smooth Pill Checkboxes --- */
-.field-title {
-  font-weight: 600;
-  font-size: 0.95rem;
-  color: var(--text-primary);
-  margin: 0 0 14px 0;
-  text-align: left;
-}
-
+/* ==========================================================================
+   5. AESTHETIC PILL CHECKBOXES & BUTTONS
+   ========================================================================== */
 .checkbox-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
   gap: 10px;
 }
 
-/* Hide the native box completely */
+/* Hide native checkbox box */
 .checkbox-grid label input[type="checkbox"] {
   position: absolute;
   opacity: 0;
@@ -148,7 +167,6 @@ textarea {
   height: 0;
 }
 
-/* Style the text wrapper span as our tactile pill */
 .checkbox-label {
   display: flex;
   align-items: center;
@@ -174,7 +192,6 @@ textarea {
   transform: translateY(-1px);
 }
 
-/* Beautiful aesthetic snap color when volunteer taps a behavior */
 .checkbox-grid input[type="checkbox"]:checked + .checkbox-label {
   background: var(--pill-selected);
   color: var(--pill-selected-text);
@@ -183,7 +200,6 @@ textarea {
   transform: scale(0.98);
 }
 
-/* --- Premium Smooth Submit Button --- */
 button[type="submit"] {
   font-family: var(--font-stack);
   background: var(--accent-warm);
@@ -210,86 +226,74 @@ button[type="submit"]:active {
   transform: translateY(0);
 }
 
-/* Floating Blobs Setup */
+/* ==========================================================================
+   6. FLOATING BUBBLES ANIMATION SYSTEMS
+   ========================================================================== */
 .bubble {
   position: absolute;
   border-radius: 50%;
-  filter: blur(60px); /* Makes them soft, dreamy, and cloud-like */
-  z-index: 0;
+  filter: blur(60px);
+  z-index: 1; /* Sits perfectly behind the card (z-index 2) */
   animation: floatAround 12s infinite alternate ease-in-out;
-  opacity: 0.4;
+  opacity: 0.45;
 }
 
 .bubble-1 {
-  width: 300px;
-  height: 300px;
+  width: 320px;
+  height: 320px;
   background: #fef3c7; /* Pastel yellow */
-  top: 10%;
-  left: 5%;
+  top: 8%;
+  left: -4%;
 }
 
 .bubble-2 {
-  width: 400px;
-  height: 400px;
+  width: 420px;
+  height: 420px;
   background: #fed7aa; /* Pastel peach */
-  bottom: 10%;
-  right: 5%;
-  animation-duration: 18s; /* Moves at a different pace */
+  bottom: 5%;
+  right: -5%;
+  animation-duration: 18s;
 }
 
 .bubble-3 {
-  width: 250px;
-  height: 250px;
+  width: 280px;
+  height: 280px;
   background: #fae8ff; /* Pastel lavender */
-  top: 40%;
-  left: 45%;
+  top: 35%;
+  left: 35%;
   animation-duration: 14s;
 }
 
-/* Ensure card stays crisply on top of the floating background layers */
-.card {
-  position: relative;
-  z-index: 1;
-}
-
-/* The magic keyframe that moves the bubbles smoothly */
 @keyframes floatAround {
   0% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-30px) translateX(20px) scale(1.05); }
-  100% { transform: translateY(10px) translateX(-10px) scale(0.95); }
+  50% { transform: translateY(-35px) translateX(25px) scale(1.08); }
+  100% { transform: translateY(15px) translateX(-15px) scale(0.92); }
 }
 
-/* --- Desktop 2-Column Responsive Layout --- */
+/* ==========================================================================
+   7. RESPONSIVE DESKTOP SYMMETRY UPGRADES
+   ========================================================================== */
 @media (min-width: 768px) {
-  /* Step 1: Make the card wide and roomy */
   .card {
-    max-width: 900px; 
+    max-width: 950px;
     padding: 56px;
   }
 
-  /* Step 2: Turn the form into a 2-column grid */
   form {
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+  }
+
+  .form-top-row {
     display: grid;
-    grid-template-columns: 1fr 1.2fr; /* Left side slightly narrower than behavior grid */
-    gap: 40px;
-    align-items: start;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
   }
 
-  /* Step 3: Stack the Kitten and Volunteer dropdowns nicely on the left */
-  form > label:nth-of-type(1),
-  form > label:nth-of-type(2) {
-    grid-column: 1; /* Force them into column 1 */
-  }
-
-  /* Step 4: Force the behavior checkboxes into the right column */
-  form > div:first-of-type {
-    grid-column: 2; /* Force into column 2 */
-    grid-row: span 2; /* Stretch down past both dropdowns */
-  }
-
-  /* Step 5: Make the Notes box and Save Button span full-width across the bottom */
-  form > label:last-of-type,
-  button[type="submit"] {
-    grid-column: span 2; 
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
   }
 }
