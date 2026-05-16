@@ -7,8 +7,8 @@ function App() {
   const [volunteerName, setVolunteerName] = useState("");
   const [notes, setNotes] = useState("");
   const [behaviors, setBehaviors] = useState([]);
-  const volunteerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"]
-  const kittenOptions = ["Chicken", "Wren", "Finch", "Rey", "Chewy"]
+  const volunteerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"];
+  const kittenOptions = ["Chicken", "Wren", "Finch", "Rey", "Chewy"];
 
   async function handleSubmit(event) {
   event.preventDefault();
@@ -57,6 +57,12 @@ function App() {
 
   return (
     <main className="page">
+
+      {/* Floating Decorative Background Blobs */}
+      <div className="bubble bubble-1"></div>
+      <div className="bubble bubble-2"></div>
+      <div className="bubble bubble-3"></div>
+
       <section className="card">
         <h1>Tiny Lions</h1>
         <p>Feral kitten socialization tracker</p>
@@ -88,17 +94,22 @@ function App() {
 
             <div className="checkbox-grid">
               {behaviorOptions.map((behavior) => (
-                <label className="checkbox-label" key={behavior}>
+                /* 1. We keep the unique key on the parent container */
+                <label key={behavior}>
                   <input
                     type="checkbox"
                     checked={behaviors.includes(behavior)}
                     onChange={() => toggleBehavior(behavior)}
                   />
-                  {behavior}
+                  {/* 2. Giving the text its own class allows the CSS to hide the checkbox 
+                      and style this whole pill element cleanly! */}
+                  <span className="checkbox-label">
+                    {behavior}
+                  </span>
                 </label>
               ))}
+            </div>
           </div>
-        </div>
           <label>
             Notes
             <textarea
