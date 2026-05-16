@@ -2,23 +2,35 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  // Your actual state variables
+  // Navigation View state: "logSession", "addKitten", or "addTamer"
+  const [activeView, setActiveView] = useState("logSession"); 
+
+  // Core Form States (Session Log)
   const [kittenName, setKittenName] = useState("");
   const [tamerName, setTamerName] = useState("");
   const [notes, setNotes] = useState("");
   const [behaviors, setBehaviors] = useState([]);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  // New Kitten Form States
+  const [newKittenName, setNewKittenName] = useState("");
+  const [intakeDate, setIntakeDate] = useState("");
+  const [isGrouped, setIsGrouped] = useState(false);
+  const [groupMembers, setGroupMembers] = useState("");
+
+  // New Tamer Form State
+  const [newTamerName, setNewTamerName] = useState("");
+
   const tamerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"];
   const kittenOptions = ["Chicken", "Wren", "Finch", "Rey", "Chewy"];
 
-  async function handleSubmit(event) {
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9n2sXoQh8j3mL7kKZt1e5n9vVqjHqgXlLh0a/exec";
+
+  // --- SUBMIT 1: LOG A SOCIALIZATION SESSION ---
+  async function handleSessionSubmit(event) {
     event.preventDefault();
-
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnrtVjG5pPMmuVTQPh1qEYw9ODaeN5bo1N6h_XXDNtkwHcd6hciek74IfNkfrhyrXnXg/exec";
-
-    // FIXED: Mapped these keys perfectly to your real state variable names above
     const formData = {
+      type: "session",
       kittenName: kittenName,   
       tamerName: tamerName,     
       behaviors: behaviors,  
@@ -29,38 +41,92 @@ function App() {
       await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
         mode: "no-cors", 
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
-      // Show the beautiful thank you card screen
       setIsSubmitted(true);
-
-      // FIXED: Sweeps your real variables back to empty states
       setNotes("");
       setBehaviors([]);
       setKittenName("");
       setTamerName("");
-
     } catch (error) {
-      console.error("Submission failed:", error);
-      alert("❌ Something went wrong saving the session to Google Sheets.");
+      console.error(error);
+      alert("❌ Something went wrong saving the session.");
+    }
+  }
+
+  // --- SUBMIT 2: REGISTER A NEW KITTEN ---
+  async function handleNewKittenSubmit(event) {
+    event.preventDefault();
+    if (!newKittenName || !intakeDate) {
+      alert("Please fill out the Kitten Name and Intake Date!");
+      return;
+    }
+
+    const kittenData = {
+      type: "newKitten",
+      kittenName: newKittenName,
+      intakeDate: intakeDate,
+      isGrouped: isGrouped,
+      groupMembers: isGrouped ? groupMembers : ""
+    };
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(kittenData),
+      });
+
+      alert(`🐾 ${newKittenName} has been successfully added to the Master List!`);
+      
+      setNewKittenName("");
+      setIntakeDate("");
+      setIsGrouped(false);
+      setGroupMembers("");
+      setActiveView("logSession"); 
+    } catch (error) {
+      console.error(error);
+      alert("❌ Something went wrong registering the kitten.");
+    }
+  }
+
+  // --- SUBMIT 3: REGISTER A NEW TAMER ---
+  async function handleNewTamerSubmit(event) {
+    event.preventDefault();
+    if (!newTamerName.trim()) {
+      alert("Please enter a tamer name!");
+      return;
+    }
+
+    const tamerData = {
+      type: "newTamer",
+      tamerName: newTamerName
+    };
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(tamerData),
+      });
+
+      alert(`👋 ${newTamerName} has been added as an authorized Tamer!`);
+      setNewTamerName("");
+      setActiveView("logSession");
+    } catch (error) {
+      console.error(error);
+      alert("❌ Something went wrong registering the tamer.");
     }
   }
 
   const behaviorOptions = [
-    "hissing",
-    "hiding",
-    "eats from chopstick",
-    "eats from hand",
-    "comes to front w/ encouragement",
-    "comes to front w/o encouragement",
-    "stays up front w/ door open",
-    "plays",
-    "able to pet",
-    "able to pick up or hold"
+    "hissing", "hiding", "eats from chopstick", "eats from hand",
+    "comes to front w/ encouragement", "comes to front w/o encouragement",
+    "stays up front w/ door open", "plays", "able to pet", "able to pick up or hold"
   ];
 
   function toggleBehavior(behavior) {
@@ -71,27 +137,16 @@ function App() {
     }
   }
 
-  // ADDED: The screen switcher trigger rule
   if (isSubmitted) {
     return (
       <main className="page">
-        <div className="bubble bubble-1"></div>
-        <div className="bubble bubble-2"></div>
-        <div className="bubble bubble-3"></div>
-
         <section className="card" style={{ textAlign: "center", padding: "60px 40px" }}>
           <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🐾</div>
-          <h1 style={{ marginBottom: "16px" }}>Thank You!</h1>
-          <p style={{ color: "var(--text-muted)", marginBottom: "32px", lineHeight: "1.6" }}>
-            Your socialization session data has been safely recorded in Google Sheets.<br />
-            Marina and the kittens appreciate your hard work!
+          <h1>Thank You!</h1>
+          <p style={{ color: "var(--text-muted)", marginBottom: "32px" }}>
+            Your session data has been safely logged in your spreadsheet view.
           </p>
-          
-          <button 
-            onClick={() => setIsSubmitted(false)} 
-            className="submit-btn"
-            style={{ width: "auto", padding: "14px 36px", margin: "0 auto" }}
-          >
+          <button onClick={() => setIsSubmitted(false)} className="submit-btn" style={{ width: "auto" }}>
             Log Another Session
           </button>
         </section>
@@ -101,74 +156,167 @@ function App() {
 
   return (
     <main className="page">
-      {/* Floating Decorative Background Blobs */}
       <div className="bubble bubble-1"></div>
       <div className="bubble bubble-2"></div>
       <div className="bubble bubble-3"></div>
 
-      <section className="card">
-        <h1>Tiny Lions</h1>
-        <p>Welcome to the Tiny Lions tracker!<br />Log information about your sessions with the kittens.<br />Try to include as much detail as possible in your notes!</p>
+      <div className="app-container">
+        
+        <header className="app-header">
+          <h1>Tiny Lions</h1>
+          <p className="app-subtitle">
+            The premiere tiny lion tracking site of Santa Barbara County
+          </p>
+        </header>
 
-        <form onSubmit={handleSubmit}>
-          
-          {/* ROW 1: Both dropdowns side-by-side */}
-          <div className="form-top-row">
-            <label>
-              Kitten
-              <select value={kittenName} onChange={(event) => setKittenName(event.target.value)}>
-                <option value="">choose a kitten</option>
-                {kittenOptions.map(name => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </select>
-            </label>
+        {/* FLOATING GLASS TABS BAR CONTAINER */}
+        <div className="floating-nav-container">
+          <button 
+            type="button"
+            onClick={() => setActiveView("logSession")}
+            className={`nav-tab ${activeView === "logSession" ? "active" : "inactive"}`}
+          >
+            📝 Behavior Log
+          </button>
+          <button 
+            type="button"
+            onClick={() => setActiveView("addKitten")}
+            className={`nav-tab ${activeView === "addKitten" ? "active" : "inactive"}`}
+          >
+            🦁 New Lion
+          </button>
+          <button 
+            type="button"
+            onClick={() => setActiveView("addTamer")}
+            className={`nav-tab ${activeView === "addTamer" ? "active" : "inactive"}`}
+          >
+           🧍 New Tamer
+          </button>
+        </div>
 
-            <label>
-              Tamer
-              <select value={tamerName} onChange={(event) => setTamerName(event.target.value)}>
-                <option value="">choose a tamer</option>
-                {tamerOptions.map(name => (
-                  <option key={name} value={name}>{name}</option>
-                ))}
-              </select>
-            </label>
-          </div>
+        <section className="card">
+          {activeView === "logSession" && (
+            <>
+              <h2 className="workspace-heading">Behavior Log</h2>
+              <form onSubmit={handleSessionSubmit} className="session-form">
+                <div className="form-top-row">
+                  <label>
+                    Kitten
+                    <select value={kittenName} onChange={(event) => setKittenName(event.target.value)}>
+                      <option value="">choose a kitten</option>
+                      {kittenOptions.map(name => <option key={name} value={name}>{name}</option>)}
+                    </select>
+                  </label>
 
-          {/* ROW 2: Behaviors Observed Grid */}
-          <div className="form-behaviors-section">
-            <p className="field-title">Behaviors observed</p>
-            <div className="checkbox-grid">
-              {behaviorOptions.map((behavior) => (
-                <label key={behavior}>
-                  <input
-                    type="checkbox"
-                    checked={behaviors.includes(behavior)}
-                    onChange={() => toggleBehavior(behavior)}
+                  <label>
+                    Tamer
+                    <select value={tamerName} onChange={(event) => setTamerName(event.target.value)}>
+                      <option value="">choose a tamer</option>
+                      {tamerOptions.map(name => <option key={name} value={name}>{name}</option>)}
+                    </select>
+                  </label>
+                </div>
+
+                <div className="form-behaviors-section">
+                  <p className="field-title">Behaviors observed</p>
+                  <div className="checkbox-grid">
+                    {behaviorOptions.map((behavior) => (
+                      <label key={behavior}>
+                        <input type="checkbox" checked={behaviors.includes(behavior)} onChange={() => toggleBehavior(behavior)} />
+                        <span className="checkbox-label">{behavior}</span>
+                      </label>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="form-notes-section">
+                  <label>
+                    Notes
+                    <textarea value={notes} onChange={(event) => setNotes(event.target.value)} placeholder="how did the session go?" />
+                  </label>
+                </div>
+
+                <button type="submit">Save session</button>
+              </form>
+            </>
+          )}
+
+          {activeView === "addKitten" && (
+            <>
+              <h2 className="workspace-heading">Add Kitten</h2>
+              <form onSubmit={handleNewKittenSubmit} className="kitten-form">
+                <label>
+                  Kitten Name
+                  <input 
+                    type="text" 
+                    value={newKittenName} 
+                    onChange={(e) => setNewKittenName(e.target.value)} 
+                    placeholder="e.g. belluscious"
                   />
-                  <span className="checkbox-label">
-                    {behavior}
-                  </span>
                 </label>
-              ))}
-            </div>
-          </div>
 
-          {/* ROW 3: Notes Section */}
-          <label>
-            Notes
-            <textarea
-              value={notes}
-              onChange={(event) => setNotes(event.target.value)}
-              placeholder="how did the session go?"
-            />
-          </label>
+                <label>
+                  Date of Intake
+                  <input 
+                    type="date" 
+                    value={intakeDate} 
+                    onChange={(e) => setIntakeDate(e.target.value)} 
+                  />
+                </label>
 
-          {/* ROW 4: Submit Button */}
-          <button type="submit">Save session</button>
-          
-        </form>
-      </section>
+                <div className="sibling-panel">
+                  <input 
+                    type="checkbox" 
+                    id="grouped"
+                    checked={isGrouped} 
+                    onChange={(e) => setIsGrouped(e.target.checked)} 
+                  />
+                  <label htmlFor="grouped">
+                    Is this kitten grouped with siblings?
+                  </label>
+                </div>
+
+                {isGrouped && (
+                  <label style={{ gridColumn: "1 / -1" }}>
+                    Group Member Names
+                    <input 
+                      type="text" 
+                      value={groupMembers} 
+                      onChange={(e) => setGroupMembers(e.target.value)} 
+                      placeholder="e.g. Gravy, Waffles"
+                    />
+                  </label>
+                )}
+
+                <button type="submit">
+                  Register Kitten
+                </button>
+              </form>
+            </>
+          )}
+
+          {activeView === "addTamer" && (
+            <>
+              <h2 className="workspace-heading">Add Tamer</h2>
+              <form onSubmit={handleNewTamerSubmit} className="tamer-form">
+                <label>
+                  Tamer Name
+                  <input 
+                    type="text" 
+                    value={newTamerName} 
+                    onChange={(e) => setNewTamerName(e.target.value)} 
+                    placeholder="e.g. Kitty"
+                  />
+                </label>
+
+                <button type="submit">
+                  Register Tamer
+                </button>
+              </form>
+            </>
+          )}
+        </section>
+      </div>
     </main>
   );
 }

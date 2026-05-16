@@ -353,3 +353,193 @@ select option {
   background-color: #ffffff !important;
   color: #2d2a26 !important;
 }
+/* ==========================================================================
+   8. MASTER ALIGNMENTS & DASHBOARD CENTER FORCES
+   ========================================================================== */
+.app-container {
+  width: 100% !important;
+  max-width: 950px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important; /* Perfect global alignment down the center track */
+  justify-content: center !important;
+}
+
+.app-header {
+  width: 100% !important;
+  text-align: center !important;
+  margin-bottom: 28px !important;
+}
+
+.app-subtitle {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  display: block !important;
+  font-size: 1.1rem !important;
+  color: var(--text-muted) !important;
+}
+
+.workspace-heading {
+  margin: 0 0 32px 0 !important;
+  text-align: center !important;
+  font-size: 2rem !important;
+  font-weight: 800 !important;
+  color: var(--text-primary) !important;
+  width: 100% !important;
+}
+
+/* ==========================================================================
+   9. INDEPENDENT FLOATING PURPLE GLASS CHIP TABS
+   ========================================================================== */
+.floating-nav-container {
+  display: flex !important;
+  gap: 16px !important; /* Visual spacing gap between the standalone glass chips */
+  margin-bottom: 36px !important;
+  width: 100% !important;
+  max-width: 680px !important;
+  justify-content: center !important;
+}
+
+/* Base properties for our standalone independent tabs */
+.nav-tab {
+  flex: 1 !important;
+  font-family: var(--font-stack) !important;
+  font-size: 1.05rem !important;
+  padding: 14px 20px !important;
+  border-radius: var(--radius-md) !important; /* Rounded independent pill shapes */
+  cursor: pointer !important;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+  box-sizing: border-box !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* ACTIVE STATE: Deep rich brand purple glass block highlighting */
+.nav-tab.active {
+  background: var(--accent-warm) !important;
+  color: #ffffff !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(129, 33, 153, 0.4) !important;
+  box-shadow: 
+    0 10px 20px rgba(129, 33, 153, 0.2),
+    0 2px 6px rgba(129, 33, 153, 0.15) !important;
+  transform: translateY(-2px); /* Lifts beautifully from desktop sheets */
+}
+
+/* INACTIVE STATE: Clean translucent purple matching tint backdrop */
+.nav-tab.inactive {
+  background: rgba(129, 33, 153, 0.08) !important;
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+  border: 1px solid rgba(129, 33, 153, 0.15) !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
+  backdrop-filter: blur(8px) !important;
+  -webkit-backdrop-filter: blur(8px) !important;
+}
+
+.nav-tab.inactive:hover {
+  background: rgba(129, 33, 153, 0.15) !important;
+  color: var(--accent-warm) !important;
+  transform: translateY(-1px);
+}
+
+/* ==========================================================================
+   10. LAYOUT SYMMETRY UPGRADES & SUBMIT CENTERING
+   ========================================================================== */
+.card form {
+  display: grid !important;
+  gap: 24px !important;
+  width: 100% !important;
+}
+
+/* Sub-inputs structure dimensions sizing values */
+.card form input[type="text"],
+.card form input[type="date"] {
+  font-family: var(--font-stack) !important;
+  font-size: 1rem !important;
+  padding: 16px !important;
+  border-radius: var(--radius-md) !important;
+  color: var(--text-primary) !important;
+  box-sizing: border-box !important;
+  width: 75% !important;
+  margin: 0 auto !important;
+  text-align: center !important;
+  height: 56px !important;
+  
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%) !important;
+  border: 2.5px solid rgb(154, 22, 195) !important;
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+}
+
+.card form label {
+  display: grid !important;
+  gap: 10px !important;
+  font-weight: 700 !important;
+  font-size: 1.3rem !important;
+  color: var(--text-primary) !important;
+  text-align: center !important;
+  width: 100% !important;
+}
+
+/* Half length submit configuration centers rules */
+.card form button[type="submit"] {
+  width: 100% !important;
+  max-width: 280px !important; /* Locks width down cleanly to half box dimensions */
+  margin: 16px auto 0 auto !important;
+}
+
+@media (min-width: 768px) {
+  .kitten-form {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 36px !important;
+  }
+  .kitten-form > .sibling-panel,
+  .kitten-form > button {
+    grid-column: span 2 !important;
+  }
+}
+
+.form-notes-section {
+  width: 100% !important;
+}
+
+/* Sibling display control blocks card alignments */
+.sibling-panel {
+  background: rgba(255, 255, 255, 0.4) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-md) !important;
+  backdrop-filter: blur(4px) !important;
+  -webkit-backdrop-filter: blur(4px) !important;
+  width: 75% !important;
+  max-width: 412px;
+  margin: 12px auto !important;
+  padding: 16px 20px !important;
+  box-sizing: border-box !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 14px !important;
+}
+
+.sibling-panel label {
+  font-size: 1.1rem !important;
+  font-weight: 700 !important;
+  color: var(--text-primary) !important;
+  margin: 0 !important;
+  display: inline !important;
+  cursor: pointer !important;
+}
+
+.sibling-panel input[type="checkbox"] {
+  width: 20px !important;
+  height: 20px !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+  accent-color: var(--accent-warm) !important;
+}
