@@ -7,6 +7,8 @@ function App() {
   const [volunteerName, setVolunteerName] = useState("");
   const [notes, setNotes] = useState("");
   const [behaviors, setBehaviors] = useState([]);
+  const volunteerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"]
+  const kittenOptions = ["Chicken", "Wren", "Finch", "Rey", "Chewy"]
 
   async function handleSubmit(event) {
   event.preventDefault();
@@ -60,23 +62,27 @@ function App() {
         <p>Feral kitten socialization tracker</p>
 
         <form onSubmit={handleSubmit}>
-          <label>
-            Kitten name
-            <input
-              value={kittenName}
-              onChange={(event) => setKittenName(event.target.value)}
-              placeholder="Mango"
-            />
-          </label>
+          {/* Kitten Name Dropdown */}
+        <label>
+          Kitten name
+          <select value={kittenName} onChange={(event) => setKittenName(event.target.value)}>
+            <option value="">-- Select a Kitten --</option>
+            {kittenOptions.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
 
-          <label>
-            Volunteer name
-            <input
-              value={volunteerName}
-              onChange={(event) => setVolunteerName(event.target.value)}
-              placeholder="Jade"
-            />
-          </label>
+        {/* Volunteer Name Dropdown */}
+        <label>
+          Volunteer name
+          <select value={volunteerName} onChange={(event) => setVolunteerName(event.target.value)}>
+            <option value="">-- Select Your Name --</option>
+            {volunteerOptions.map(name => (
+              <option key={name} value={name}>{name}</option>
+            ))}
+          </select>
+        </label>
           <div>
             <p className="field-title">Behaviors observed</p>
 
