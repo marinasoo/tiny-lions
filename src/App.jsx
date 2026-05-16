@@ -35,16 +35,16 @@ function App() {
 }
 
   const behaviorOptions = [
-    "Hissing",
-    "Hiding",
-    "Ate from chopstick",
-    "Ate from hand",
-    "Comes to front with encouragement",
-    "Comes to front without encouragement",
-    "Stays up front when the door is open",
-    "Plays",
-    "Able to pet",
-    "Able to pick up / hold"
+    "hissing",
+    "hiding",
+    "eats from chopstick",
+    "eats from hand",
+    "comes to front w/ encouragement",
+    "comes to front w/o encouragement",
+    "stays up front w/ door open",
+    "plays",
+    "able to pet",
+    "able to pick up or hold"
   ];
 
   function toggleBehavior(behavior) {
