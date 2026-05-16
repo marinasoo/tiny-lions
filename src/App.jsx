@@ -1,38 +1,54 @@
 import { useState } from "react";
 import "./App.css";
-import { supabase } from "./supabaseClient";
 
 function App() {
+  // Your actual state variables
   const [kittenName, setKittenName] = useState("");
-  const [volunteerName, setVolunteerName] = useState("");
+  const [tamerName, setTamerName] = useState("");
   const [notes, setNotes] = useState("");
   const [behaviors, setBehaviors] = useState([]);
-  const volunteerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"];
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const tamerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"];
   const kittenOptions = ["Chicken", "Wren", "Finch", "Rey", "Chewy"];
 
   async function handleSubmit(event) {
-  event.preventDefault();
+    event.preventDefault();
 
-  const { error } = await supabase.from("sessions").insert({
-    kitten_name: kittenName,
-    volunteer_name: volunteerName,
-    behaviors: behaviors,
-    notes: notes,
-  });
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwnrtVjG5pPMmuVTQPh1qEYw9ODaeN5bo1N6h_XXDNtkwHcd6hciek74IfNkfrhyrXnXg/exec";
 
-  if (error) {
-    alert("Something went wrong. The session was not saved.");
-    console.error(error);
-    return;
+    // FIXED: Mapped these keys perfectly to your real state variable names above
+    const formData = {
+      kittenName: kittenName,   
+      tamerName: tamerName,     
+      behaviors: behaviors,  
+      notes: notes           
+    };
+
+    try {
+      await fetch(GOOGLE_SCRIPT_URL, {
+        method: "POST",
+        mode: "no-cors", 
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      // Show the beautiful thank you card screen
+      setIsSubmitted(true);
+
+      // FIXED: Sweeps your real variables back to empty states
+      setNotes("");
+      setBehaviors([]);
+      setKittenName("");
+      setTamerName("");
+
+    } catch (error) {
+      console.error("Submission failed:", error);
+      alert("❌ Something went wrong saving the session to Google Sheets.");
+    }
   }
-
-  alert("Session saved!");
-
-  setKittenName("");
-  setVolunteerName("");
-  setBehaviors([]);
-  setNotes("");
-}
 
   const behaviorOptions = [
     "hissing",
@@ -55,7 +71,35 @@ function App() {
     }
   }
 
-return (
+  // ADDED: The screen switcher trigger rule
+  if (isSubmitted) {
+    return (
+      <main className="page">
+        <div className="bubble bubble-1"></div>
+        <div className="bubble bubble-2"></div>
+        <div className="bubble bubble-3"></div>
+
+        <section className="card" style={{ textAlign: "center", padding: "60px 40px" }}>
+          <div style={{ fontSize: "4rem", marginBottom: "20px" }}>🐾</div>
+          <h1 style={{ marginBottom: "16px" }}>Thank You!</h1>
+          <p style={{ color: "var(--text-muted)", marginBottom: "32px", lineHeight: "1.6" }}>
+            Your socialization session data has been safely recorded in Google Sheets.<br />
+            Marina and the kittens appreciate your hard work!
+          </p>
+          
+          <button 
+            onClick={() => setIsSubmitted(false)} 
+            className="submit-btn"
+            style={{ width: "auto", padding: "14px 36px", margin: "0 auto" }}
+          >
+            Log Another Session
+          </button>
+        </section>
+      </main>
+    );
+  }
+
+  return (
     <main className="page">
       {/* Floating Decorative Background Blobs */}
       <div className="bubble bubble-1"></div>
@@ -82,9 +126,9 @@ return (
 
             <label>
               Tamer
-              <select value={volunteerName} onChange={(event) => setVolunteerName(event.target.value)}>
+              <select value={tamerName} onChange={(event) => setTamerName(event.target.value)}>
                 <option value="">choose a tamer</option>
-                {volunteerOptions.map(name => (
+                {tamerOptions.map(name => (
                   <option key={name} value={name}>{name}</option>
                 ))}
               </select>
