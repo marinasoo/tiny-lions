@@ -64,16 +64,16 @@ return (
 
       <section className="card">
         <h1>Tiny Lions</h1>
-        <p>Feral kitten socialization tracker</p>
+        <p>Welcome to the Tiny Lions tracker!<br />Log information about your sessions with the kittens.<br />Try to include as much detail as possible in your notes!</p>
 
         <form onSubmit={handleSubmit}>
           
           {/* ROW 1: Both dropdowns side-by-side */}
           <div className="form-top-row">
             <label>
-              Kitten name
+              Kitten
               <select value={kittenName} onChange={(event) => setKittenName(event.target.value)}>
-                <option value="">-- Select a Kitten --</option>
+                <option value="">choose a kitten</option>
                 {kittenOptions.map(name => (
                   <option key={name} value={name}>{name}</option>
                 ))}
@@ -81,9 +81,9 @@ return (
             </label>
 
             <label>
-              Volunteer name
+              Tamer
               <select value={volunteerName} onChange={(event) => setVolunteerName(event.target.value)}>
-                <option value="">-- Select Your Name --</option>
+                <option value="">choose a tamer</option>
                 {volunteerOptions.map(name => (
                   <option key={name} value={name}>{name}</option>
                 ))}
@@ -116,7 +116,7 @@ return (
             <textarea
               value={notes}
               onChange={(event) => setNotes(event.target.value)}
-              placeholder="How did the session go?"
+              placeholder="how did the session go?"
             />
           </label>
 
