@@ -1,16 +1,9 @@
-# React + Vite
+# Tiny Lions - ASAP Shelter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Tiny Lions is a program at ASAP Shelter that works to socialize feral kittens. Volunteers work daily through a very specific set of procedures to earn trust and help kittens become comfortable with people and the shelter environment. Once our tiny lions graduate, they're ready to be adopted!
 
-Currently, two official plugins are available:
+Learn more about the program [here.](https://asapcats.org/about/tiny-lions/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+This site offers a place for volunteers to log their training sessions, check on the history of a kitten, add new tiny lions, and view graduates. The site is linked to a spreadsheet where all of the information can be tracked for grants, end-of-year statistics, and annual archives. Please reach out to Marina (mar2suh@gmail.com) with any questions or comments!
 
-## React Compiler
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
