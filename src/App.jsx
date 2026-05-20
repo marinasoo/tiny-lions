@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import "./App.css";
 
-// Import our standalone workspace sub-components
+// Import standalone workspace sub-components
 import Navigation from "./components/navigation";
 import BehaviorLog from "./components/behaviorlog";
 import CheckStatus from "./components/checkstatus";
@@ -15,10 +15,10 @@ function App() {
   const [isLoadingOptions, setIsLoadingOptions] = useState(true);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
-  // Core stable webhook link
+  // webhook link
   const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaZWSll8pewi0iyr9i7ihnfpm9k1Fespi9mylZYv3Z9TDXc0k06DL80A1Fy_SCiNR6iw/exec";
 
-  // Downloads fresh dropdown arrays right when the dashboard finishes building
+  // downloads fresh dropdown arrays for kittens/tamers
   useEffect(() => {
     async function fetchDropdownOptions() {
       try {
@@ -65,11 +65,11 @@ function App() {
           <p className="app-subtitle">log behavior, check status, and add kittens/tamers for ASAP cats</p>
         </header>
 
-        {/* Dynamic floating glass nav pill bar */}
+        {/* navigation bar */}
         <Navigation activeView={activeView} setActiveView={setActiveView} />
 
         <section className="card">
-          {/* VIEW 1: Log a live socialization session form */}
+          {/* log a training session */}
           {activeView === "logSession" && (
             <BehaviorLog 
               kittenOptions={kittenOptions} 
@@ -80,7 +80,7 @@ function App() {
             />
           )}
 
-          {/* VIEW 2: Look up a kitten's history log panels */}
+          {/* look up kitten's history and past training sessions */}
           {activeView === "checkStatus" && (
             <CheckStatus 
               kittenOptions={kittenOptions}
@@ -89,12 +89,12 @@ function App() {
             />
           )}
 
-          {/* VIEW 3: Register a new kitten master entry */}
+          {/* register new kitten */}
           {activeView === "addKitten" && (
             <AddKitten GOOGLE_SCRIPT_URL={GOOGLE_SCRIPT_URL} setActiveView={setActiveView} />
           )}
 
-          {/* VIEW 4: Register an authorized volunteer names cell */}
+          {/* register new tamer */}
           {activeView === "addTamer" && (
             <AddTamer GOOGLE_SCRIPT_URL={GOOGLE_SCRIPT_URL} setActiveView={setActiveView} />
           )}
