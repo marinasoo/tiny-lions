@@ -24,7 +24,7 @@ function App() {
   const tamerOptions = ["Marina", "Anastasia", "Nicole", "Athena", "Lauren"];
   const kittenOptions = ["Chicken", "Wren", "Finch", "Rey", "Chewy"];
 
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx9n2sXoQh8j3mL7kKZt1e5n9vVqjHqgXlLh0a/exec";
+  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwaZWSll8pewi0iyr9i7ihnfpm9k1Fespi9mylZYv3Z9TDXc0k06DL80A1Fy_SCiNR6iw/exec";
 
   // --- SUBMIT 1: LOG A SOCIALIZATION SESSION ---
   async function handleSessionSubmit(event) {
