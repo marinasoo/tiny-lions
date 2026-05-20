@@ -6,7 +6,7 @@ export default function AddTamer({ GOOGLE_SCRIPT_URL, setActiveView }) {
   async function handleNewTamerSubmit(event) {
     event.preventDefault();
     if (!newTamerName.trim()) {
-      alert("Please enter a tamer name!");
+      alert("please enter a tamer name!");
       return;
     }
 
@@ -22,23 +22,22 @@ export default function AddTamer({ GOOGLE_SCRIPT_URL, setActiveView }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(tamerData),
       });
-      alert(`👋 ${newTamerName} has been added as an authorized Tamer!`);
+      alert(`${newTamerName} has been added as an tamer!`);
       setActiveView("logSession");
     } catch (error) {
       console.error(error);
-      alert("❌ Something went wrong registering the tamer.");
+      alert("omething went wrong registering the tamer.");
     }
   }
 
   return (
     <>
-      <h2 className="workspace-heading">Add Tamer</h2>
       <form onSubmit={handleNewTamerSubmit} className="tamer-form">
         <label>
-          Tamer Name
-          <input type="text" value={newTamerName} onChange={(e) => setNewTamerName(e.target.value)} placeholder="e.g. Jane Doe" />
+          tamer name
+          <input type="text" value={newTamerName} onChange={(e) => setNewTamerName(e.target.value)} placeholder="e.g. Athena" />
         </label>
-        <button type="submit">Register Tamer</button>
+        <button type="submit">register tamer</button>
       </form>
     </>
   );

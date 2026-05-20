@@ -543,3 +543,16 @@ select option {
   cursor: pointer !important;
   accent-color: var(--accent-warm) !important;
 }
+
+
+/* This softens the individual kitten history milestone panels */
+.card .history-card {
+  background: rgba(255, 255, 255, 0.35) !important; /* Drops from 40% to 35% opacity */
+  border-left: 5px solid rgba(154, 22, 195, 0.6) !important; /* Softens the thick purple left border line */
+}
+
+/* This softens the background bubbles for the observed behavior tags */
+.card .history-card span {
+  background: rgba(154, 22, 195, 0.07) !important; /* Ultra soft 7% purple tint */
+  border: 1px solid rgba(154, 22, 195, 0.15) !important; /* Adds a clean, thin border frame */
+}

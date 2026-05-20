@@ -8,21 +8,28 @@ export default function Navigation({ activeView, setActiveView }) {
         onClick={() => setActiveView("logSession")}
         className={`nav-tab ${activeView === "logSession" ? "active" : "inactive"}`}
       >
-        📝 Behavior Log
+        Behavior Log
+      </button>
+      <button 
+        type="button"
+        onClick={() => setActiveView("checkStatus")}
+        className={`nav-tab ${activeView === "checkStatus" ? "active" : "inactive"}`}
+      >
+        Check Status
       </button>
       <button 
         type="button"
         onClick={() => setActiveView("addKitten")}
         className={`nav-tab ${activeView === "addKitten" ? "active" : "inactive"}`}
       >
-        🐱 Add Kitten
+        Add Kitten
       </button>
       <button 
         type="button"
         onClick={() => setActiveView("addTamer")}
         className={`nav-tab ${activeView === "addTamer" ? "active" : "inactive"}`}
       >
-        👋 Add Tamer
+        Add Tamer
       </button>
     </div>
   );

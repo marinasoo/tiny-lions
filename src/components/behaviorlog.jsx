@@ -40,17 +40,16 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
       setIsSubmitted(true);
     } catch (error) {
       console.error(error);
-      alert("❌ Something went wrong saving the session.");
+      alert("Something went wrong saving the session.");
     }
   }
 
   return (
     <>
-      <h2 className="workspace-heading">Behavior Log</h2>
       <form onSubmit={handleSessionSubmit} className="session-form">
         <div className="form-top-row">
           <label>
-            Kitten
+            kitten
             <select value={kittenName} onChange={(e) => setKittenName(e.target.value)} disabled={isLoadingOptions}>
               <option value="">{isLoadingOptions ? "fetching kittens..." : "choose a kitten"}</option>
               {kittenOptions.map(name => <option key={name} value={name}>{name}</option>)}
@@ -58,7 +57,7 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
           </label>
 
           <label>
-            Tamer
+            tamer
             <select value={tamerName} onChange={(e) => setTamerName(e.target.value)} disabled={isLoadingOptions}>
               <option value="">{isLoadingOptions ? "fetching tamers..." : "choose a tamer"}</option>
               {tamerOptions.map(name => <option key={name} value={name}>{name}</option>)}
@@ -67,7 +66,7 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
         </div>
 
         <div className="form-behaviors-section">
-          <p className="field-title">Behaviors observed</p>
+          <p className="field-title">behaviors observed</p>
           <div className="checkbox-grid">
             {behaviorOptions.map((behavior) => (
               <label key={behavior}>
@@ -80,11 +79,11 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
 
         <div className="form-notes-section">
           <label>
-            Notes
+            notes
             <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="how did the session go?" />
           </label>
         </div>
-        <button type="submit">Save session</button>
+        <button type="submit">save session</button>
       </form>
     </>
   );
