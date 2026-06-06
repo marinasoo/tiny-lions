@@ -61,9 +61,12 @@ function App() {
 
       <div className="app-container">
         <header className="app-header">
+          <img src="/asaplogoround.png" className="app-logo" alt="Logo" />
           <h1>Tiny Lions</h1>
-          <p className="app-subtitle">log behavior, check status, and add kittens/tamers for ASAP cats</p>
+          <img src="/asaplogoround.png" className="app-logo" alt="Logo" />
         </header>
+        <p className="app-subtitle">log behavior, check status, and add kittens/tamers for ASAP cats</p>
+
 
         {/* navigation bar */}
         <Navigation activeView={activeView} setActiveView={setActiveView} />

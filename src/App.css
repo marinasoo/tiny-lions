@@ -370,6 +370,16 @@ select option {
   width: 100% !important;
   text-align: center !important;
   margin-bottom: 28px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.app-logo {
+  width: 58px !important;
+  height: 48px !important;
 }
 
 .app-subtitle {
