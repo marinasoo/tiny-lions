@@ -2,11 +2,11 @@ import { useState, useEffect } from "react";
 import "./App.css";
 
 // Import standalone workspace sub-components
-import Navigation from "./components/Navigation";
-import BehaviorLog from "./components/BehaviorLog";
-import CheckStatus from "./components/CheckStatus";
-import AddKitten from "./components/AddKitten";
-import AddTamer from "./components/AddTamer";
+import Navigation from "./components/navigation";
+import BehaviorLog from "./components/behaviorlog";
+import CheckStatus from "./components/checkstatus";
+import AddKitten from "./components/addkitten";
+import AddTamer from "./components/addtamer";
 
 function App() {
   const [activeView, setActiveView] = useState("logSession"); 
