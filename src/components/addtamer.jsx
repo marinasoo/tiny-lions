@@ -6,7 +6,7 @@ export default function AddTamer({ GOOGLE_SCRIPT_URL, setActiveView }) {
   async function handleNewTamerSubmit(event) {
     event.preventDefault();
     if (!newTamerName.trim()) {
-      alert("please enter a tamer name!");
+      alert("Please enter a tamer name!");
       return;
     }
 
@@ -34,10 +34,10 @@ export default function AddTamer({ GOOGLE_SCRIPT_URL, setActiveView }) {
     <>
       <form onSubmit={handleNewTamerSubmit} className="tamer-form">
         <label>
-          tamer name
+          Tamer Name
           <input type="text" value={newTamerName} onChange={(e) => setNewTamerName(e.target.value)} placeholder="e.g. Athena" />
         </label>
-        <button type="submit">register tamer</button>
+        <button type="submit">Register Tamer</button>
       </form>
     </>
   );

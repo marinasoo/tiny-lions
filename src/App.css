@@ -3,14 +3,14 @@
    ========================================================================== */
 :root {
   --bg-gradient:radial-gradient(at 0% 0%, #e0e7ff 0px, transparent 25%),
-               radial-gradient(at 50% 0%, #fef3c7 0px, transparent 25%),
+               radial-gradient(at 50% 0%, #cfb5e95d 0px, transparent 25%),
                radial-gradient(at 100% 0%, #fae8ff 0px, transparent 36%),
                radial-gradient(at 0% 100%, #e0f2fe 0px, transparent 42%),
                #f8fafc;
   --card-bg: rgba(255, 255, 255, 0.45);
   --accent-warm: #812199;       /* Soft Terracotta */
   --accent-hover: #c96f2c;
-  --pill-selected: #fff6d2;     /* Soft buttery yellow */
+  --pill-selected: #7f29f742;  
   --pill-selected-text: #000000;
   --text-primary: #2d2a26;      /* Rich charcoal */
   --text-muted: #716673;
@@ -243,7 +243,7 @@ textarea {
   background: var(--pill-selected);
   color: var(--pill-selected-text);
   border-color: rgba(251, 211, 141, 0.5);
-  font-weight: 450;
+  font-weight: 550;
   transform: scale(0.98);
 }
 
@@ -288,7 +288,7 @@ button[type="submit"]:active {
 .bubble-1 {
   width: 320px;
   height: 320px;
-  background: #fef3c7; /* Pastel yellow */
+  background: #ffc3e269;
   top: 8%;
   left: -4%;
 }
@@ -296,7 +296,7 @@ button[type="submit"]:active {
 .bubble-2 {
   width: 420px;
   height: 420px;
-  background: #fed7aa; /* Pastel peach */
+  background: #a28bff38;
   bottom: 5%;
   right: -5%;
   animation-duration: 18s;
@@ -305,7 +305,7 @@ button[type="submit"]:active {
 .bubble-3 {
   width: 280px;
   height: 280px;
-  background: #fae8ff; /* Pastel lavender */
+  background: #fae8ff6c; /* Pastel lavender */
   top: 35%;
   left: 35%;
   animation-duration: 14s;

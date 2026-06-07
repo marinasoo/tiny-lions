@@ -49,24 +49,24 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
       <form onSubmit={handleSessionSubmit} className="session-form">
         <div className="form-top-row">
           <label>
-            kitten
+            Kitten
             <select value={kittenName} onChange={(e) => setKittenName(e.target.value)} disabled={isLoadingOptions}>
-              <option value="">{isLoadingOptions ? "fetching kittens..." : "choose a kitten"}</option>
+              <option value="">{isLoadingOptions ? "fetching kittens..." : "choose kitten"}</option>
               {kittenOptions.map(name => <option key={name} value={name}>{name}</option>)}
             </select>
           </label>
 
           <label>
-            tamer
+            Tamer
             <select value={tamerName} onChange={(e) => setTamerName(e.target.value)} disabled={isLoadingOptions}>
-              <option value="">{isLoadingOptions ? "fetching tamers..." : "choose a tamer"}</option>
+              <option value="">{isLoadingOptions ? "fetching tamers..." : "choose tamer"}</option>
               {tamerOptions.map(name => <option key={name} value={name}>{name}</option>)}
             </select>
           </label>
         </div>
 
         <div className="form-behaviors-section">
-          <p className="field-title">behaviors observed</p>
+          <p className="field-title">Behaviors Observed</p>
           <div className="checkbox-grid">
             {behaviorOptions.map((behavior) => (
               <label key={behavior}>
@@ -79,11 +79,11 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
 
         <div className="form-notes-section">
           <label>
-            notes
+            Notes
             <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="how did the session go?" />
           </label>
         </div>
-        <button type="submit">save session</button>
+        <button type="submit">Save Session</button>
       </form>
     </>
   );
