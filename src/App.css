@@ -1,568 +1,386 @@
 /* ==========================================================================
-   1. CORE DESIGN SYSTEM (VARIABLES)
+    base design & global element styles
    ========================================================================== */
 :root {
-  --bg-gradient:radial-gradient(at 0% 0%, #e0e7ff 0px, transparent 25%),
-               radial-gradient(at 50% 0%, #cfb5e95d 0px, transparent 25%),
-               radial-gradient(at 100% 0%, #fae8ff 0px, transparent 36%),
-               radial-gradient(at 0% 100%, #e0f2fe 0px, transparent 42%),
-               #f8fafc;
-  --card-bg: rgba(255, 255, 255, 0.45);
-  --accent-warm: #812199;       /* Soft Terracotta */
-  --accent-hover: #c96f2c;
-  --pill-selected: #7f29f742;  
-  --pill-selected-text: #000000;
-  --text-primary: #2d2a26;      /* Rich charcoal */
-  --text-muted: #716673;
-  --border-subtle: rgba(158, 130, 156, 0.4);
-  --radius-lg: 24px;
-  --radius-md: 16px;
-  --font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --pink: #ffe2e4;
+  --panel: #fffafb;
+  --cream: #fffce3;
+  --green: #79b586;
+  --green-soft: #edf7ef;
+  --ink: #151313;
+  --line: #3f3b3a;
+  --shadow: -8px 8px 14px rgba(63, 59, 58, 0.22);
+  --mono: "Atkinson Hyperlegible Mono", "Atkinson Hyperlegible", ui-monospace, monospace;
+  --script: "Betania Patmos In", "Brush Script MT", cursive;
 }
 
-/* ==========================================================================
-   2. GLOBAL BASE STYLES & LAYOUT
-   ========================================================================== */
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
-  font-family: var(--font-stack);
-  background: var(--bg-gradient);
-  color: var(--text-primary);
-  min-height: 100vh;
+  background: var(--pink);
+  color: var(--ink);
+  font-family: var(--mono);
+  cursor: url("/asapcursor.png") 16 16, auto;
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
-  position: relative;
-}
-
-.page {
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px 20px;
-  box-sizing: border-box;
-  position: relative;
   overflow: hidden;
 }
 
-/* --- Glassmorphic UI Card Container --- */
-.card {
-  background: var(--card-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  width: 100%;
-  max-width: 560px;
-  padding: 48px 40px;
-  border-radius: var(--radius-lg);
-  border: 1px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 
-    0 4px 30px rgba(47, 36, 29, 0.03),
-    0 20px 50px rgba(47, 36, 29, 0.06);
-  position: relative;
-  z-index: 2; /* Sits crisply above the floating bubbles */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  font-family: var(--mono);
 }
 
-form {
+.page {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  padding: 72px 16px 40px;
+  overflow: hidden;
+}
+
+.app-shell {
+  width: 100%;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  text-align: center;
+  min-height: 0;
+}
+
+/* ==========================================================================
+   header and subtitle styles
+   ========================================================================== */
+.app-header {
+  width: 100%;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 3.5rem;
+  font-weight: 650;
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.app-header sup {
+  font-size: 0.28em;
+  position: relative;
+  top: -0.6em;
+}
+
+.noun {
+  margin: 6px 0;
+  font-size: 0.85rem;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+.definition {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+
+.app-logo {
+  display: block;
+  width: 54px;
+  height: auto;
+  margin: 12px auto 0;
+}
+
+/* ==========================================================================
+  navigation container and tab styles
+   ========================================================================== */
+.floating-nav-container {
+  position: relative;
+  z-index: 12;
+  display: flex;
+  gap: 12px;
+  margin-bottom: -28px;
+  width: 90%;
+  justify-content: center;
+  text-align: center;
+}
+
+.nav-tab {
+  flex: 1;
+  padding: 14px 22px;
+  border: 1.5px solid var(--line);
+  border-radius: 6px;
+  box-shadow: 2px 2px 0px var(--line);
+  font-family: var(--mono);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 700;
+  text-align: center;
+  text-transform: none;
+  transition: all 0.2s ease;
+}
+
+.nav-tab.active { background: var(--green); color: #ffffff; font-weight: 900; }
+.nav-tab.inactive { background: var(--cream); }
+.nav-tab:hover { transform: translateY(-2px); }
+.nav-tab.inactive:hover { background: var(--green-soft); }
+
+/* ==========================================================================
+   workspace card styles and form container
+   ========================================================================== */
+.card {
+  width: 100%;
+  padding: 0 82px 32px; /* Top padding moved to the pseudo-element below */
+  background: var(--panel);
+  border: 2px solid var(--line);
+  border-radius: 24px;
+  box-shadow: var(--shadow);
+  text-align: center;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+
+/* The transparent frosted glass blur contained to the top of the white box */
+.card::before {
+  content: "";
+  display: block;
+  position: sticky;
+  top: 0;
+  margin: 0 -82px; /* Expands to touch the left and right borders safely */
+  height: 48px; /* Acts as the original 48px padding to push the form down */
+  background: rgba(255, 250, 251, 0.85); /* Panel color with slight transparency */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.session-form, .status-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  text-align: center;
+}
+
+.intro-copy {
+  font-size: 1.1rem;
+  line-height: 1.45;
+}
+
+.form-top-row {
+  width: 100%;
   display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
 }
 
 /* ==========================================================================
-   3. TYPOGRAPHY
+   form fields and interactive element styles
    ========================================================================== */
-h1 {
-  font-size: 3rem;
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  margin: 0 0 8px 0;
-  text-align: center;
-  /*background: #c96f2c;linear-gradient(to right, #2d2a26, #736d66);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;*/
-}
-
-p {
-  font-size: 1.2rem;
-  color: var(--text-muted);
-  margin: 0 0 40px 0;
-  text-align: center;
-  font-weight: 00;
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.field-title {
+label, .field-title {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 1.25rem;
   font-weight: 700;
-  font-size: 1.3rem;
-  color: var(--text-primary);
-  margin: 0 0 14px 0;
-  text-align: center;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-/* ==========================================================================
-   4. INPUTS, LABELS & DROPDOWNS
-   ========================================================================== */
-label {
-  display: grid;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 1.3rem;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
   text-align: center;
 }
 
-input, select, select option, textarea {
-  font-family: var(--font-stack) !important;
-  font-size: 1rem;
-  padding: 16px;
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-  box-sizing: border-box;
-  width: 75%;
-  margin: 0 auto;
+.field-title { text-transform: lowercase; }
+
+input, select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 400;
+  font-style: italic;
   text-align: center;
   text-align-last: center;
-  line-height: 24px;
-
-  /* SHINY & MATCHING SIZE UPGRADES */
-  height: 56px; /* Matches behavior pills height exactly */
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%);
-  border: 2.5px solid rgb(154, 22, 195);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
-select {
-  appearance: none;
-  -webkit-appearance: none; /* Strips default blocky browser styling */
-  
-  /* Adds a sleeker, minimalist custom chevron arrow */
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23736d66' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 24px center;
-  background-size: 14px;
-  padding-right: 48px; 
-  cursor: pointer;
-}
-
-/* Make the dropdown menu list look clean and modern when clicked */
-select option {
-  background-color: #fcfbfa; /* Matches your warm minimalist theme */
-  color: var(--text-primary);
-  padding: 14px;
-  font-size: 1rem;
-}
-
-/* Changes background color on hover inside the dropdown menu list */
-select option:hover,
-select option:focus,
-select option:active {
-  background: linear-gradient(#fed7aa, #fed7aa) !important; /* Soft peach highlight */
-  color: #7c2d12 !important;
-}
-
-select:hover {
-  border-color: rgba(255, 255, 255, 0.9);
-  box-shadow: 
-    inset 0 1px 1px rgba(255, 255, 255, 0.8), 
-    0 6px 16px rgba(47, 36, 29, 0.04);
-  transform: translateY(-1px); /* Micro-float feedback */
-}
-
-input:focus, select:focus, textarea:focus {
-  outline: none;
-  border-color: var(--accent-warm);
-  background: #ffffff;
-  box-shadow: 0 0 0 4px rgba(226, 135, 67, 0.12);
+input::placeholder,
+textarea::placeholder {
+  color: rgba(21, 19, 19, 0.55);
+  font-style: italic;
+  font-weight: 400;
 }
 
 textarea {
-  min-height: 130px;
-  height: auto !important;
+  min-height: 120px;
+  padding-block: 42px;
   resize: vertical;
-  line-height: 1.5;
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding-top: 50px;
 }
+select { appearance: none; }
 
 /* ==========================================================================
-   5. AESTHETIC PILL CHECKBOXES & BUTTONS
+   checkbox system omg
    ========================================================================== */
 .checkbox-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(155px, 1fr));
-  gap: 10px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; 
+  align-content: center;
+  max-width: 680px; 
+  margin: 0 auto; /* Keeps the entire cluster centered on the card */
+  gap: 12px; 
 }
 
-/* Hide native checkbox box */
-.checkbox-grid label input[type="checkbox"] {
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
+/* Tells any React wrapper elements to stay completely invisible so 
+   flexbox can directly sort and arrange the buttons by width */
+.checkbox-grid > div {
+  display: contents;
 }
+
+.checkbox-grid input { position: absolute; opacity: 0; width: 0; height: 0; }
 
 .checkbox-label {
-  display: flex;
+  flex: 0 0 auto; 
+  width: auto;
+  min-height: 52px;
+  padding: 8px 24px; 
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  background: rgba(181, 181, 181, 0.171);
-  border: 1px solid transparent;
-  border-radius: var(--radius-md);
-  padding: 14px 12px;
-  font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1.3;
-  color: var(--text-primary);
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  user-select: none;
-  min-height: 52px;
-  box-sizing: border-box;
-  min-height: 80px;
-}
-
-.checkbox-label:hover {
-  background: rgba(243, 239, 230, 1);
-  transform: translateY(-1px);
-}
-
-.checkbox-grid input[type="checkbox"]:checked + .checkbox-label {
-  background: var(--pill-selected);
-  color: var(--pill-selected-text);
-  border-color: rgba(251, 211, 141, 0.5);
-  font-weight: 550;
-  transform: scale(0.98);
-}
-
-button[type="submit"] {
-  font-family: var(--font-stack);
-  background: var(--accent-warm);
-  color: white;
-  border: none;
-  border-radius: var(--radius-md);
-  padding: 18px;
-  font-size: 1.4rem;
-  font-weight: 900;
-  letter-spacing: -0.01em;
-  cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 4px 14px rgba(226, 135, 67, 0.25);
-  margin-top: 12px;
-}
-
-button[type="submit"]:hover {
-  background: var(--accent-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(226, 135, 67, 0.35);
-}
-
-button[type="submit"]:active {
-  transform: translateY(0);
-}
-
-/* ==========================================================================
-   6. FLOATING BUBBLES ANIMATION SYSTEMS
-   ========================================================================== */
-.bubble {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(60px);
-  z-index: 1; /* Sits perfectly behind the card (z-index 2) */
-  animation: floatAround 12s infinite alternate ease-in-out;
-  opacity: 0.45;
-}
-
-.bubble-1 {
-  width: 320px;
-  height: 320px;
-  background: #ffc3e269;
-  top: 8%;
-  left: -4%;
-}
-
-.bubble-2 {
-  width: 420px;
-  height: 420px;
-  background: #a28bff38;
-  bottom: 5%;
-  right: -5%;
-  animation-duration: 18s;
-}
-
-.bubble-3 {
-  width: 280px;
-  height: 280px;
-  background: #fae8ff6c; /* Pastel lavender */
-  top: 35%;
-  left: 35%;
-  animation-duration: 14s;
-}
-
-@keyframes floatAround {
-  0% { transform: translateY(0px) scale(1); }
-  50% { transform: translateY(-35px) translateX(25px) scale(1.08); }
-  100% { transform: translateY(15px) translateX(-15px) scale(0.92); }
-}
-
-/* ==========================================================================
-   7. RESPONSIVE DESKTOP SYMMETRY UPGRADES
-   ========================================================================== */
-@media (min-width: 768px) {
-  .card {
-    max-width: 950px;
-    padding: 56px;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 48px;
-  }
-
-  .form-top-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 36px;
-  }
-
-  .checkbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 12px;
-  }
-}
-
-select {
-  color-scheme: light;
-}
-
-select option {
-  background-color: #ffffff !important;
-  color: #2d2a26 !important;
-}
-/* ==========================================================================
-   8. MASTER ALIGNMENTS & DASHBOARD CENTER FORCES
-   ========================================================================== */
-.app-container {
-  width: 100% !important;
-  max-width: 950px !important;
-  margin: 0 auto !important;
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important; /* Perfect global alignment down the center track */
-  justify-content: center !important;
-}
-
-.app-header {
-  width: 100% !important;
-  text-align: center !important;
-  margin-bottom: 28px !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.app-logo {
-  width: 58px !important;
-  height: 48px !important;
-}
-
-.app-subtitle {
-  text-align: center !important;
-  margin-left: auto !important;
-  margin-right: auto !important;
-  display: block !important;
-  font-size: 1.1rem !important;
-  color: var(--text-muted) !important;
-}
-
-.workspace-heading {
-  margin: 0 0 32px 0 !important;
-  text-align: center !important;
-  font-size: 2rem !important;
-  font-weight: 800 !important;
-  color: var(--text-primary) !important;
-  width: 100% !important;
-}
-
-/* ==========================================================================
-   9. INDEPENDENT FLOATING PURPLE GLASS CHIP TABS
-   ========================================================================== */
-.floating-nav-container {
-  display: flex !important;
-  gap: 16px !important; /* Visual spacing gap between the standalone glass chips */
-  margin-bottom: 36px !important;
-  width: 100% !important;
-  max-width: 680px !important;
-  justify-content: center !important;
-}
-
-/* Base properties for our standalone independent tabs */
-.nav-tab {
-  flex: 1 !important;
-  font-family: var(--font-stack) !important;
-  font-size: 1.05rem !important;
-  padding: 14px 20px !important;
-  border-radius: var(--radius-md) !important; /* Rounded independent pill shapes */
-  cursor: pointer !important;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
-  box-sizing: border-box !important;
-  display: inline-flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-}
-
-/* ACTIVE STATE: Deep rich brand purple glass block highlighting */
-.nav-tab.active {
-  background: var(--accent-warm) !important;
-  color: #ffffff !important;
-  font-weight: 800 !important;
-  border: 1px solid rgba(129, 33, 153, 0.4) !important;
-  box-shadow: 
-    0 10px 20px rgba(129, 33, 153, 0.2),
-    0 2px 6px rgba(129, 33, 153, 0.15) !important;
-  transform: translateY(-2px); /* Lifts beautifully from desktop sheets */
-}
-
-/* INACTIVE STATE: Clean translucent purple matching tint backdrop */
-.nav-tab.inactive {
-  background: rgba(129, 33, 153, 0.08) !important;
-  color: var(--text-primary) !important;
-  font-weight: 600 !important;
-  border: 1px solid rgba(129, 33, 153, 0.15) !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02) !important;
-  backdrop-filter: blur(8px) !important;
-  -webkit-backdrop-filter: blur(8px) !important;
-}
-
-.nav-tab.inactive:hover {
-  background: rgba(129, 33, 153, 0.15) !important;
-  color: var(--accent-warm) !important;
-  transform: translateY(-1px);
-}
-
-/* ==========================================================================
-   10. LAYOUT SYMMETRY UPGRADES & SUBMIT CENTERING
-   ========================================================================== */
-.card form {
-  display: grid !important;
-  gap: 24px !important;
-  width: 100% !important;
-}
-
-/* Sub-inputs structure dimensions sizing values */
-.card form input[type="text"],
-.card form input[type="date"] {
-  font-family: var(--font-stack) !important;
-  font-size: 1rem !important;
-  padding: 16px !important;
-  border-radius: var(--radius-md) !important;
-  color: var(--text-primary) !important;
-  box-sizing: border-box !important;
-  width: 75% !important;
-  margin: 0 auto !important;
-  text-align: center !important;
-  height: 56px !important;
   
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.3) 100%) !important;
-  border: 2.5px solid rgb(154, 22, 195) !important;
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.6), 0 2px 6px rgba(0, 0, 0, 0.02) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: #fff;
+  font-family: var(--mono);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-align: center;
+  
+  /* Keeps the text cleanly on one line */
+  white-space: nowrap; 
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.card form label {
-  display: grid !important;
-  gap: 10px !important;
-  font-weight: 700 !important;
-  font-size: 1.3rem !important;
-  color: var(--text-primary) !important;
-  text-align: center !important;
-  width: 100% !important;
+/* Interactive States */
+.checkbox-label:hover { 
+  background: var(--green-soft); 
+  transform: translateY(-2px); 
 }
 
-/* Half length submit configuration centers rules */
-.card form button[type="submit"] {
-  width: 100% !important;
-  max-width: 280px !important; /* Locks width down cleanly to half box dimensions */
-  margin: 16px auto 0 auto !important;
+.checkbox-grid input:checked + .checkbox-label { 
+  background: var(--green); 
+  color: #ffffff; 
+  font-weight: 900; 
 }
 
-@media (min-width: 768px) {
-  .kitten-form {
-    display: grid !important;
-    grid-template-columns: 1fr 1fr !important;
-    gap: 36px !important;
-  }
-  .kitten-form > .sibling-panel,
-  .kitten-form > button {
-    grid-column: span 2 !important;
-  }
+.checkbox-label:hover { background: var(--green-soft); transform: translateY(-2px); }
+.checkbox-grid input:checked + .checkbox-label { background: var(--green); color: #ffffff; font-weight: 900; }
+
+/* ==========================================================================
+   buttons buttons and more buttons (just one, really)
+   ========================================================================== */
+.submit-btn, button[type="submit"] {
+  width: 100%;
+  max-width: 240px;
+  margin: 12px auto 0;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 8px;
+  background: var(--green-soft);
+  box-shadow: 3px 3px 0px var(--line);
+  font-family: var(--mono);
+  font-size: 1.3rem;
+  font-weight: 900;
+  text-align: center;
+  transition: all 0.2s ease;
 }
 
-.form-notes-section {
-  width: 100% !important;
+.submit-btn:hover, button[type="submit"]:hover { transform: translateY(-2px); }
+button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ==========================================================================
+   behavior history and graduation announcement styles
+   ========================================================================== */
+.status-results {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin-top: 36px;
+  padding-top: 36px;
+  border-top: 1px dashed var(--line);
 }
 
-/* Sibling display control blocks card alignments */
-.sibling-panel {
-  background: rgba(255, 255, 255, 0.4) !important;
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: var(--radius-md) !important;
-  backdrop-filter: blur(4px) !important;
-  -webkit-backdrop-filter: blur(4px) !important;
-  width: 75% !important;
-  max-width: 412px;
-  margin: 12px auto !important;
-  padding: 16px 20px !important;
-  box-sizing: border-box !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 14px !important;
+.history-card {
+  width: 100%;
+  padding: 24px;
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
 }
 
-.sibling-panel label {
-  font-size: 1.1rem !important;
-  font-weight: 700 !important;
-  color: var(--text-primary) !important;
-  margin: 0 !important;
-  display: inline !important;
-  cursor: pointer !important;
+.history-card-header { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 900; margin-bottom: 16px; }
+.history-behaviors > div { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.history-behaviors span { padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.9rem; }
+.history-notes { font-size: 1rem; font-style: italic; line-height: 1.45; margin-top: 18px; text-align: center; }
+
+.graduation-card {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 56px 1fr 56px;
+  align-items: end;
+  gap: 12px;
+  padding: 42px 24px 24px;
+  border: 14px solid #77694f;
+  border-radius: 8px;
+  background: #f8fffb;
+  box-shadow:
+    inset 0 0 10px rgba(21, 19, 19, 0.55),
+    3px 3px 0 rgba(21, 19, 19, 0.2);
 }
 
-.sibling-panel input[type="checkbox"] {
-  width: 20px !important;
-  height: 20px !important;
-  margin: 0 !important;
-  cursor: pointer !important;
-  accent-color: var(--accent-warm) !important;
+.graduation-card img {
+  width: 42px;
 }
 
-
-/* This softens the individual kitten history milestone panels */
-.card .history-card {
-  background: rgba(255, 255, 255, 0.35) !important; /* Drops from 40% to 35% opacity */
-  border-left: 5px solid rgba(154, 22, 195, 0.6) !important; /* Softens the thick purple left border line */
+.graduation-card h2,
+.graduation-card h3,
+.graduation-card p {
+  margin: 0;
 }
 
-/* This softens the background bubbles for the observed behavior tags */
-.card .history-card span {
-  background: rgba(154, 22, 195, 0.07) !important; /* Ultra soft 7% purple tint */
-  border: 1px solid rgba(154, 22, 195, 0.15) !important; /* Adds a clean, thin border frame */
+.graduation-card h2,
+.graduation-card h3 {
+  font-size: 2.55rem;
+  font-weight: 400;
+  letter-spacing: 0.04em;
+}
+
+.graduation-card p {
+  margin: 26px 0;
+  font-family: var(--script);
+  font-size: 2.25rem;
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   mobile modifiers
+   ========================================================================== */
+@media (max-width: 600px) {
+  .app-header h1 { font-size: 2.4rem; }
+  .card { padding: 0 16px 24px; border-radius: 16px; }
+  .card::before { margin: 0 -16px; height: 36px; }
+  .floating-nav-container { gap: 6px; }
+  .nav-tab { font-size: 0.75rem; padding: 8px; }
 }

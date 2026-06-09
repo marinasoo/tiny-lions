@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOptions, GOOGLE_SCRIPT_URL, setIsSubmitted }) {
   const [kittenName, setKittenName] = useState("");
@@ -7,9 +7,9 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
   const [behaviors, setBehaviors] = useState([]);
 
   const behaviorOptions = [
-    "hissing", "hiding", "eats from chopstick", "eats from hand",
-    "comes to front w/ encouragement", "comes to front w/o encouragement",
-    "stays up front w/ door open", "plays", "able to pet", "able to pick up or hold"
+    "hisses", "hides", "chopstick", "finger",
+    "approach - encouraged", "approach - freely",
+    "stays up front", "plays", "can pet", "can pick up"
   ];
 
   function toggleBehavior(behavior) {
@@ -47,26 +47,34 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
   return (
     <>
       <form onSubmit={handleSessionSubmit} className="session-form">
+        <p className="intro-copy">
+          We have a very specific set of procedures that we use to gain the kittens
+          trust and to eventually seek out attention. It is a very rewarding
+          experience seeing these little kittens go from being terrified and
+          hissing at us to sitting on our laps and purring and sending them off to
+          a home.
+        </p>
+
         <div className="form-top-row">
           <label>
-            Kitten
+            kitten
             <select value={kittenName} onChange={(e) => setKittenName(e.target.value)} disabled={isLoadingOptions}>
-              <option value="">{isLoadingOptions ? "fetching kittens..." : "choose kitten"}</option>
+              <option value="">{isLoadingOptions ? "fetching kittens..." : "e.g. Artemis"}</option>
               {kittenOptions.map(name => <option key={name} value={name}>{name}</option>)}
             </select>
           </label>
 
           <label>
-            Tamer
+            tamer
             <select value={tamerName} onChange={(e) => setTamerName(e.target.value)} disabled={isLoadingOptions}>
-              <option value="">{isLoadingOptions ? "fetching tamers..." : "choose tamer"}</option>
+              <option value="">{isLoadingOptions ? "fetching tamers..." : "e.g. Athena"}</option>
               {tamerOptions.map(name => <option key={name} value={name}>{name}</option>)}
             </select>
           </label>
         </div>
 
         <div className="form-behaviors-section">
-          <p className="field-title">Behaviors Observed</p>
+          <p className="field-title">observed behaviors</p>
           <div className="checkbox-grid">
             {behaviorOptions.map((behavior) => (
               <label key={behavior}>
@@ -79,11 +87,15 @@ export default function BehaviorLog({ kittenOptions, tamerOptions, isLoadingOpti
 
         <div className="form-notes-section">
           <label>
-            Notes
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="how did the session go?" />
+            notes
+            <textarea
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              placeholder="how was your interaction today? about how long did you spend with the kitten? any toys that they particularly like?"
+            />
           </label>
         </div>
-        <button type="submit">Save Session</button>
+        <button type="submit">submit</button>
       </form>
     </>
   );

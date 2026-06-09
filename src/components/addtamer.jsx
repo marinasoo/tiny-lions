@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function AddTamer({ GOOGLE_SCRIPT_URL, setActiveView }) {
   const [newTamerName, setNewTamerName] = useState("");

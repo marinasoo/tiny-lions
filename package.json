@@ -10,6 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fontsource/atkinson-hyperlegible-mono": "^5.2.10",
+    "@fontsource/betania-patmos-in": "^5.2.1",
     "@supabase/supabase-js": "^2.105.4",
     "canvas-confetti": "^1.9.4",
     "react": "^19.2.6",

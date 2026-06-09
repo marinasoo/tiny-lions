@@ -1,5 +1,3 @@
-import React from "react";
-
 export default function Navigation({ activeView, setActiveView }) {
   return (
     <div className="floating-nav-container">
@@ -8,7 +6,7 @@ export default function Navigation({ activeView, setActiveView }) {
         onClick={() => setActiveView("logSession")}
         className={`nav-tab ${activeView === "logSession" ? "active" : "inactive"}`}
       >
-        Behavior Log
+        Log Session
       </button>
       <button 
         type="button"
@@ -19,17 +17,10 @@ export default function Navigation({ activeView, setActiveView }) {
       </button>
       <button 
         type="button"
-        onClick={() => setActiveView("addKitten")}
-        className={`nav-tab ${activeView === "addKitten" ? "active" : "inactive"}`}
+        onClick={() => setActiveView("resources")}
+        className={`nav-tab ${activeView === "resources" ? "active" : "inactive"}`}
       >
-        Add Kitten
-      </button>
-      <button 
-        type="button"
-        onClick={() => setActiveView("addTamer")}
-        className={`nav-tab ${activeView === "addTamer" ? "active" : "inactive"}`}
-      >
-        Add Tamer
+        Resources
       </button>
     </div>
   );

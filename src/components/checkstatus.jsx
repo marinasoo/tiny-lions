@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import confetti from "canvas-confetti";
 
 export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SCRIPT_URL }) {
@@ -7,6 +7,33 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
   const [isGraduated, setIsGraduated] = useState(false);
   const [isSearching, setIsSearching] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+
+  useEffect(() => {
+    if (!isGraduated) return undefined;
+
+    const duration = 5 * 1000;
+    const animationEnd = Date.now() + duration;
+    const defaults = { startVelocity: 28, spread: 360, ticks: 70, zIndex: 1000 };
+
+    function randomInRange(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    const interval = window.setInterval(() => {
+      const timeLeft = animationEnd - Date.now();
+
+      if (timeLeft <= 0) {
+        window.clearInterval(interval);
+        return;
+      }
+
+      const particleCount = 45 * (timeLeft / duration);
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.08, 0.28), y: randomInRange(0, 0.25) } });
+      confetti({ ...defaults, particleCount, origin: { x: randomInRange(0.72, 0.92), y: randomInRange(0, 0.25) } });
+    }, 250);
+
+    return () => window.clearInterval(interval);
+  }, [isGraduated]);
 
   async function handleLookup(event) {
     event.preventDefault();
@@ -24,12 +51,6 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
       
       if (data.graduated || data.status === "Graduated") {
         setIsGraduated(true);
-        // Fire a festive burst of confetti!
-        confetti({
-          particleCount: 150,
-          spread: 80,
-          origin: { y: 0.6 }
-        });
       } else {
         setHistoryLogs(data.history || []);
       }
@@ -44,27 +65,25 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
 
   return (
     <>
-      <form onSubmit={handleLookup} style={{ display: "grid", justifyItems: "center", gap: "20px" }}>
-        <label style={{ width: "100%", maxWidth: "450px" }}>
-          Start typing to search
+      <form onSubmit={handleLookup} className="status-form">
+        <p className="intro-copy">
+          Check in on past behavior sessions of a kitten. Good resource before
+          your start a session. Or kitten missing from the list? Let's see if
+          they're graduated!
+        </p>
+
+        <label className="status-search">
+          kitten
           <input
             list="all-kittens-list"
             value={selectedKitten}
-            placeholder={isLoadingOptions ? "Fetching kittens..." : "e.g. Chicken"}
+            placeholder={isLoadingOptions ? "fetching kittens..." : "start typing to search..."}
             onChange={(e) => {
                 setSelectedKitten(e.target.value);
                 setHasSearched(false);
                 setIsGraduated(false);
             }}
             disabled={isLoadingOptions}
-            style={{ 
-              width: "100%",
-              padding: "10px",
-              borderRadius: "6px",
-              border: "1px solid #ccc",
-              marginTop: "6px",
-              fontSize: "1rem"
-            }}
           />
           <datalist id="all-kittens-list">
             {kittenOptions.map(name => (
@@ -72,77 +91,53 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
             ))}
           </datalist>
         </label>
-        <button type="submit" disabled={!selectedKitten || isSearching} style={{ maxWidth: "220px" }}>
-          {isSearching ? "Searching logs..." : "View progress!"}
+        <button type="submit" disabled={!selectedKitten || isSearching}>
+          {isSearching ? "searching..." : "check"}
         </button>
       </form>
 
-      {/* --- HISTORY TIMELINE DISPLAY PANEL BLOCK --- */}
       {hasSearched && !isSearching && (
-        <div style={{ marginTop: "40px", width: "100%", display: "grid", gap: "24px" , textAlign: "center ! important"}}>
-        
+        <div className="status-results">
           {isGraduated ? (
-            <div style={{ padding: "40px 20px", display: "grid", justifyItems: "center", textAlign: "center" }}>
-              <h2 style={{ fontSize: "3.5rem", margin: "0 0 12px 0", color: "var(--accent-warm)", textTransform: "uppercase" }}>
-                Graduated!
-              </h2>
-              <p style={{ fontSize: "1.25rem", color: "var(--text-primary)", fontStyle: "italic", margin: 0, maxWidth: "500px" }}>
-              {selectedKitten} has met all of the Tiny Lions School graduation requirements!
-             </p>
+            <div className="graduation-card">
+              <img src="/asaplogo.png" alt="" />
+              <div>
+                <h2>{selectedKitten.toUpperCase()}</h2>
+                <p>has fulfilled all of the kitten credits needed to</p>
+                <h3>GRADUATE!</h3>
+              </div>
+              <img src="/asaplogo.png" alt="" />
             </div>
           ) : (
-            /* 💡 FIX 2: Wrapped the sibling elements inside a fragment container */
             <>
-              <h3 style={{ textTransform: "uppercase", fontSize: "1.1rem", color: "var(--accent-warm)", letterSpacing: "1px", textAlign: "center ! important" }}>
-                Recent Socialization Milestones for {selectedKitten}
-              </h3>
-              
               {historyLogs.length === 0 ? (
-                <p style={{ textAlign: "center", color: "var(--text-muted)", fontStyle: "italic", padding: "20px" }}>
+                <p className="empty-state">
                   no recorded sessions found
                 </p>
               ) : (
                 historyLogs.map((session, index) => (
-                  <div 
-                    key={index} 
-                    style={{
-                      background: "rgba(255, 255, 255, 0.4)",
-                      borderLeft: "5px solid var(--accent-warm)",
-                      borderRadius: "8px",
-                      padding: "20px",
-                      textAlign: "left",
-                      boxShadow: "0 4px 12px rgba(0,0,0,0.02)"
-                    }}
-                  >
-                    <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "12px", borderBottom: "1px dashed rgba(129,33,153,0.1)", paddingBottom: "6px" }}>
-                      <span style={{ fontWeight: 800, color: "var(--text-primary)" }}>📅 {session.date}</span>
-                      <span style={{ fontWeight: 600, color: "var(--accent-warm)", fontSize: "0.95rem" }}>Tamer: {session.tamer}</span>
+                  <article key={index} className="history-card">
+                    <div className="history-card-header">
+                      <span>{session.date}</span>
+                      <span>{session.tamer}</span>
                     </div>
 
-                    <div style={{ marginBottom: "12px" }}>
-                      <p style={{ fontWeight: 700, margin: "0 0 6px 0", fontSize: "0.9rem", color: "var(--text-primary)" }}>observed behaviors:</p>
+                    <div className="history-behaviors">
                       {session.behaviors.length === 0 ? (
-                        <span style={{ fontSize: "0.85rem", background: "rgba(0,0,0,0.04)", padding: "4px 8px", borderRadius: "4px", color: "var(--text-muted)" }}>none marked</span>
+                        <span>none marked</span>
                       ) : (
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: "6px" }}>
+                        <div>
                           {session.behaviors.map((b, i) => (
-                            <span key={i} style={{ fontSize: "0.85rem", background: "rgba(154, 22, 195, 0.1)", padding: "4px 10px", borderRadius: "12px", color: "rgb(129, 33, 153)", fontWeight: 600 }}>
-                              {b}
-                            </span>
+                            <span key={i}>{b}</span>
                           ))}
                         </div>
                       )}
                     </div>
 
                     {session.notes && (
-                      <div>
-                        <p style={{ fontWeight: 700, margin: "0 0 4px 0", fontSize: "0.9rem", color: "var(--text-primary)" }}>session notes:</p>
-                        <p style={{ margin: 0, fontSize: "0.95rem", color: "#444", fontStyle: "italic", background: "rgba(255,255,255,0.5)", padding: "10px", borderRadius: "6px" }}>
-                          "{session.notes}"
-                        </p>
-                      </div>
+                      <p className="history-notes">{session.notes}</p>
                     )}
-                  </div>
+                  </article>
                 ))
               )}
             </>

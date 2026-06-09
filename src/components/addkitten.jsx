@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 export default function AddKitten({ GOOGLE_SCRIPT_URL, setActiveView }) {
   const [newKittenName, setNewKittenName] = useState("");
