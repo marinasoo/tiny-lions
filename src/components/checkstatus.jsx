@@ -63,7 +63,7 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
     }
   }
 
-  return (
+return (
     <>
       <form onSubmit={handleLookup} className="status-form">
         <p className="intro-copy">
@@ -72,7 +72,18 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
           they're graduated!
         </p>
 
-        <label className="status-search">
+        {/* Added inline styles here to center it and shrink the container boundary */}
+        <label 
+          className="status-search" 
+          style={{ 
+            display: "flex", 
+            flexDirection: "column", 
+            alignItems: "center",
+            width: "100%",
+            maxWidth: "320px", /* THE FIX: Shrinks the overall horizontal area */
+            margin: "0 auto 16px auto" /* Centers the block inside your form card */
+          }}
+        >
           kitten
           <input
             list="all-kittens-list"
@@ -84,6 +95,10 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
                 setIsGraduated(false);
             }}
             disabled={isLoadingOptions}
+            style={{
+              width: "100%", /* Spans cleanly across your custom 320px max-width boundary */
+              boxSizing: "border-box"
+            }}
           />
           <datalist id="all-kittens-list">
             {kittenOptions.map(name => (
