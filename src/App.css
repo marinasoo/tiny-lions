@@ -44,7 +44,7 @@ textarea {
 
 .app-shell {
   width: 100%;
-  max-width: 860px;
+  max-width: 1000px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -180,6 +180,13 @@ textarea {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 24px;
+}
+
+.card-submission-success {
+  margin-top: 64px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--black);
 }
 
 /* ==========================================================================
@@ -383,4 +390,45 @@ button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
   .card::before { margin: 0 -16px; height: 36px; }
   .floating-nav-container { gap: 6px; }
   .nav-tab { font-size: 0.75rem; padding: 8px; }
+}
+/* ==========================================================================
+   9. NATIVE CUSTOM CAT CELEBRATION SHOWER
+   ========================================================================== */
+.custom-cat-shower {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none; /* Allows user to click things underneath smoothly */
+  z-index: 9999; /* Positions everything directly on top layer */
+  overflow: hidden;
+}
+
+.falling-cat-guy {
+  position: absolute;
+  top: -10%; /* Starts completely hidden above the viewport roof */
+  opacity: 0;
+  user-select: none;
+  animation: catRainAnimation linear forwards;
+}
+
+/* Rain physics: drops down from heaven while subtly rotating and fading in/out */
+@keyframes catRainAnimation {
+  0% {
+    top: -10%;
+    opacity: 0;
+    transform: translateX(0) rotate(0deg);
+  }
+  10% {
+    opacity: 1; /* Fade in quickly as it drops into view */
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 110%; /* Fall all the way off the floor line */
+    opacity: 0; /* Smooth vanish exit */
+    transform: translateX(30px) rotate(var(--spin-deg)); /* Adds a slight side-drift and custom spin angle */
+  }
 }
