@@ -1,5 +1,5 @@
 /* ==========================================================================
-    base design & global element styles
+   base design & global element styles
    ========================================================================== */
 :root {
   --pink: #ffe2e4;
@@ -9,9 +9,12 @@
   --green-soft: #edf7ef;
   --ink: #151313;
   --line: #3f3b3a;
-  --shadow: -8px 8px 14px rgba(63, 59, 58, 0.22);
+  --shadow: 0 2px 8px rgba(63, 59, 58, 0.08), 0 8px 32px rgba(63, 59, 58, 0.10);
+  --shadow-card: 0 1px 3px rgba(63,59,58,0.07), 0 4px 16px rgba(63,59,58,0.09);
   --mono: "Atkinson Hyperlegible Mono", "Atkinson Hyperlegible", ui-monospace, monospace;
   --script: "Betania Patmos In", "Brush Script MT", cursive;
+  --radius: 16px;
+  --radius-sm: 8px;
 }
 
 * { box-sizing: border-box; }
@@ -23,7 +26,8 @@ body {
   font-family: var(--mono);
   cursor: url("/asapcursor.png") 16 16, auto;
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+  min-height: 100vh;
+  overflow-y: auto;
 }
 
 button,
@@ -34,40 +38,40 @@ textarea {
   font-family: var(--mono);
 }
 
+/* ==========================================================================
+   page layout — full scroll
+   ========================================================================== */
 .page {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
-  padding: 72px 16px 40px;
-  overflow: hidden;
+  padding: 48px 16px 80px;
 }
 
 .app-shell {
   width: 100%;
-  max-width: 1000px;
+  max-width: 680px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
   text-align: center;
-  min-height: 0;
 }
 
 /* ==========================================================================
-   header and subtitle styles
+   header
    ========================================================================== */
 .app-header {
   width: 100%;
   text-align: center;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
 }
 
 .app-header h1 {
   margin: 0;
-  font-size: 3.5rem;
-  font-weight: 650;
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   line-height: 1;
-  letter-spacing: -0.05em;
 }
 
 .app-header sup {
@@ -77,322 +81,626 @@ textarea {
 }
 
 .noun {
-  margin: 6px 0;
-  font-size: 0.85rem;
+  margin: 6px 0 2px;
+  font-size: 0.78rem;
   font-style: italic;
-  opacity: 0.8;
+  opacity: 0.55;
 }
 
 .definition {
   margin: 0;
-  font-size: 0.85rem;
-  line-height: 1.45;
-}
-
-.app-logo {
-  display: block;
-  width: 54px;
-  height: auto;
-  margin: 12px auto 0;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  opacity: 0.7;
 }
 
 /* ==========================================================================
-  navigation container and tab styles
+   navigation
    ========================================================================== */
 .floating-nav-container {
-  position: relative;
-  z-index: 12;
   display: flex;
-  gap: 12px;
-  margin-bottom: -28px;
-  width: 90%;
+  gap: 8px;
+  margin-bottom: 16px;
+  width: 100%;
   justify-content: center;
-  text-align: center;
 }
 
 .nav-tab {
   flex: 1;
-  padding: 14px 22px;
+  padding: 10px 16px;
   border: 1.5px solid var(--line);
-  border-radius: 6px;
+  border-radius: var(--radius-sm);
   box-shadow: 2px 2px 0px var(--line);
   font-family: var(--mono);
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   font-style: italic;
   font-weight: 700;
   text-align: center;
-  text-transform: none;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  cursor: pointer;
 }
 
-.nav-tab.active { background: var(--green); color: #ffffff; font-weight: 900; }
-.nav-tab.inactive { background: var(--cream); }
+.nav-tab.active {
+  background: var(--green);
+  color: #ffffff;
+  font-weight: 900;
+  border-color: var(--line);
+}
+
+.nav-tab.inactive {
+  background: var(--cream);
+  color: var(--ink);
+}
+
 .nav-tab:hover { transform: translateY(-2px); }
 .nav-tab.inactive:hover { background: var(--green-soft); }
 
 /* ==========================================================================
-   workspace card styles and form container
+   card — no fixed height, breathes naturally
    ========================================================================== */
 .card {
   width: 100%;
-  padding: 0 82px 32px; /* Top padding moved to the pseudo-element below */
+  padding: 40px 48px 48px;
   background: var(--panel);
-  border: 2px solid var(--line);
-  border-radius: 24px;
+  border: 1.5px solid rgba(63, 59, 58, 0.15);
+  border-radius: var(--radius);
   box-shadow: var(--shadow);
   text-align: center;
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  scrollbar-width: thin;
 }
 
-/* The transparent frosted glass blur contained to the top of the white box */
-.card::before {
-  content: "";
-  display: block;
-  position: sticky;
-  top: 0;
-  margin: 0 -82px; /* Expands to touch the left and right borders safely */
-  height: 48px; /* Acts as the original 48px padding to push the form down */
-  background: rgba(255, 250, 251, 0.85); /* Panel color with slight transparency */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  z-index: 10;
-}
-
-.session-form, .status-form {
+/* ==========================================================================
+   form layout
+   ========================================================================== */
+.session-form,
+.status-form {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 32px;
+  gap: 28px;
   text-align: center;
 }
 
 .intro-copy {
-  font-size: 1.1rem;
-  line-height: 1.45;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  opacity: 0.75;
+  margin: 0;
 }
 
 .form-top-row {
   width: 100%;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+
+.kitten-description {
+  width: min(100%, 480px);
+  margin: -8px auto 0;
+  padding: 12px 16px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--green-soft);
+  font-size: 0.88rem;
+  font-style: italic;
+  font-weight: 700;
+  line-height: 1.4;
+  text-align: center;
+  color: var(--ink);
 }
 
 .card-submission-success {
-  margin-top: 64px;
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--black);
+  padding: 32px 0;
+  text-align: center;
+}
+
+.card-submission-success h2 {
+  font-size: 1.4rem;
+  margin: 0 0 8px;
+}
+
+.card-submission-success p {
+  opacity: 0.65;
+  font-size: 0.9rem;
+  margin: 0 0 24px;
 }
 
 /* ==========================================================================
-   form fields and interactive element styles
+   form fields
    ========================================================================== */
-label, .field-title {
+label,
+.field-title {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   font-family: var(--mono);
-  font-size: 1.25rem;
-  font-weight: 700;
+  font-size: 0.75rem;
+  font-weight: 800;
   text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.5;
 }
 
-.field-title { text-transform: lowercase; }
+.field-title {
+  text-transform: uppercase;
+  opacity: 0.5;
+}
 
-input, select, textarea {
+input,
+select,
+textarea {
   width: 100%;
-  padding: 12px;
-  border: 1.5px solid var(--line);
-  border-radius: 8px;
+  padding: 10px 14px;
+  border: 1.5px solid rgba(63, 59, 58, 0.2);
+  border-radius: var(--radius-sm);
   background: #fff;
   font-family: var(--mono);
-  font-size: 0.95rem;
-  font-weight: 400;
-  font-style: italic;
+  font-size: 0.92rem;
+  font-weight: 500;
+  font-style: normal;
   text-align: center;
   text-align-last: center;
+  color: var(--ink);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  opacity: 1;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(121, 181, 134, 0.15);
 }
 
 input::placeholder,
 textarea::placeholder {
-  color: rgba(21, 19, 19, 0.55);
+  color: rgba(21, 19, 19, 0.3);
   font-style: italic;
   font-weight: 400;
 }
 
 textarea {
-  min-height: 120px;
-  padding-block: 42px;
+  min-height: 100px;
   resize: vertical;
+  padding: 14px;
+  line-height: 1.5;
 }
-select { appearance: none; }
+
+select { appearance: none; cursor: pointer; }
 
 /* ==========================================================================
-   checkbox system omg
+   checkbox pill system
    ========================================================================== */
 .checkbox-grid {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center; 
-  align-content: center;
-  max-width: 680px; 
-  margin: 0 auto; /* Keeps the entire cluster centered on the card */
-  gap: 12px; 
+  justify-content: center;
+  gap: 8px;
 }
 
-/* Tells any React wrapper elements to stay completely invisible so 
-   flexbox can directly sort and arrange the buttons by width */
-.checkbox-grid > div {
-  display: contents;
-}
+.checkbox-grid > div { display: contents; }
 
-.checkbox-grid input { position: absolute; opacity: 0; width: 0; height: 0; }
+.checkbox-grid input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
 
 .checkbox-label {
-  flex: 0 0 auto; 
+  flex: 0 0 auto;
   width: auto;
-  min-height: 52px;
-  padding: 8px 24px; 
+  min-height: 36px;
+  padding: 6px 16px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  
-  border: 1.5px solid var(--line);
-  border-radius: 8px;
+  border: 1.5px solid rgba(63, 59, 58, 0.2);
+  border-radius: 100px;
   background: #fff;
   font-family: var(--mono);
-  font-size: 0.95rem;
-  font-weight: 700;
+  font-size: 0.85rem;
+  font-weight: 600;
   text-align: center;
-  
-  /* Keeps the text cleanly on one line */
-  white-space: nowrap; 
+  white-space: nowrap;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
+  color: var(--ink);
+  letter-spacing: -0.01em;
 }
 
-/* Interactive States */
-.checkbox-label:hover { 
-  background: var(--green-soft); 
-  transform: translateY(-2px); 
-}
-
-.checkbox-grid input:checked + .checkbox-label { 
-  background: var(--green); 
-  color: #ffffff; 
-  font-weight: 900; 
-}
-
-.checkbox-label:hover { background: var(--green-soft); transform: translateY(-2px); }
-.checkbox-grid input:checked + .checkbox-label { background: var(--green); color: #ffffff; font-weight: 900; }
-
-/* ==========================================================================
-   buttons buttons and more buttons (just one, really)
-   ========================================================================== */
-.submit-btn, button[type="submit"] {
-  width: 100%;
-  max-width: 240px;
-  margin: 12px auto 0;
-  padding: 12px;
-  border: 1.5px solid var(--line);
-  border-radius: 8px;
+.checkbox-label:hover {
   background: var(--green-soft);
-  box-shadow: 3px 3px 0px var(--line);
-  font-family: var(--mono);
-  font-size: 1.3rem;
-  font-weight: 900;
-  text-align: center;
-  transition: all 0.2s ease;
+  border-color: var(--green);
+  transform: translateY(-1px);
 }
 
-.submit-btn:hover, button[type="submit"]:hover { transform: translateY(-2px); }
-button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
+.checkbox-grid input:checked + .checkbox-label {
+  background: var(--green);
+  color: #ffffff;
+  border-color: var(--green);
+  font-weight: 800;
+}
 
 /* ==========================================================================
-   behavior history and graduation announcement styles
+   submit button
+   ========================================================================== */
+.submit-btn,
+button[type="submit"] {
+  width: 100%;
+  max-width: 200px;
+  margin: 4px auto 0;
+  padding: 11px 16px;
+  border: 1.5px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--ink);
+  color: #fff;
+  box-shadow: none;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.submit-btn:hover,
+button[type="submit"]:hover {
+  background: #2e2b2b;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(21, 19, 19, 0.2);
+}
+
+button[type="submit"]:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ==========================================================================
+   check status history cards
    ========================================================================== */
 .status-results {
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  margin-top: 36px;
-  padding-top: 36px;
-  border-top: 1px dashed var(--line);
+  gap: 12px;
+  margin-top: 28px;
+  padding-top: 28px;
+  border-top: 1px solid rgba(63, 59, 58, 0.1);
 }
 
 .history-card {
   width: 100%;
-  padding: 24px;
-  border: 1.5px solid var(--line);
-  border-radius: 12px;
+  padding: 20px;
+  border: 1.5px solid rgba(63, 59, 58, 0.12);
+  border-radius: var(--radius-sm);
   background: #fff;
+  box-shadow: var(--shadow-card);
+  text-align: left;
 }
 
-.history-card-header { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 900; margin-bottom: 16px; }
-.history-behaviors > div { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
-.history-behaviors span { padding: 4px 10px; border: 1px solid var(--line); border-radius: 6px; font-size: 0.9rem; }
-.history-notes { font-size: 1rem; font-style: italic; line-height: 1.45; margin-top: 18px; text-align: center; }
+.history-card-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.45;
+  margin-bottom: 12px;
+}
 
+.history-behaviors > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-start;
+}
+
+.history-behaviors span {
+  padding: 3px 10px;
+  border: 1.5px solid rgba(63, 59, 58, 0.15);
+  border-radius: 100px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  background: var(--green-soft);
+}
+
+.history-notes {
+  font-size: 0.88rem;
+  font-style: italic;
+  line-height: 1.55;
+  margin-top: 14px;
+  opacity: 0.75;
+  text-align: left;
+}
+
+/* ==========================================================================
+   graduation card
+   ========================================================================== */
 .graduation-card {
   width: 100%;
-  max-width: 700px;
-  margin: 0 auto;
   display: grid;
-  grid-template-columns: 56px 1fr 56px;
-  align-items: end;
+  grid-template-columns: 48px 1fr 48px;
+  align-items: center;
   gap: 12px;
-  padding: 42px 24px 24px;
-  border: 14px solid #77694f;
-  border-radius: 8px;
+  padding: 36px 24px;
+  border: 10px solid #77694f;
+  border-radius: var(--radius-sm);
   background: #f8fffb;
-  box-shadow:
-    inset 0 0 10px rgba(21, 19, 19, 0.55),
-    3px 3px 0 rgba(21, 19, 19, 0.2);
+  box-shadow: inset 0 0 10px rgba(21, 19, 19, 0.08);
+  text-align: center;
 }
 
-.graduation-card img {
-  width: 42px;
-}
-
-.graduation-card h2,
-.graduation-card h3,
-.graduation-card p {
-  margin: 0;
-}
+.graduation-card img { width: 36px; }
 
 .graduation-card h2,
 .graduation-card h3 {
-  font-size: 2.55rem;
+  margin: 0;
+  font-size: 2rem;
   font-weight: 400;
   letter-spacing: 0.04em;
 }
 
 .graduation-card p {
-  margin: 26px 0;
+  margin: 16px 0 0;
   font-family: var(--script);
-  font-size: 2.25rem;
+  font-size: 1.8rem;
   line-height: 1.2;
 }
 
 /* ==========================================================================
-   mobile modifiers
+   admin corner button
    ========================================================================== */
-@media (max-width: 600px) {
-  .app-header h1 { font-size: 2.4rem; }
-  .card { padding: 0 16px 24px; border-radius: 16px; }
-  .card::before { margin: 0 -16px; height: 36px; }
-  .floating-nav-container { gap: 6px; }
-  .nav-tab { font-size: 0.75rem; padding: 8px; }
+.admin-corner-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 100;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(63, 59, 58, 0.2);
+  background: var(--panel);
+  box-shadow: var(--shadow-card);
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  opacity: 0.35;
+  max-width: none;
+  margin: 0;
+  padding: 0;
 }
+
+.admin-corner-btn:hover { opacity: 1; transform: translateY(-2px); box-shadow: var(--shadow); }
+.admin-corner-btn.active { opacity: 1; background: var(--green); color: #fff; border-color: var(--green); }
+
 /* ==========================================================================
-   9. NATIVE CUSTOM CAT CELEBRATION SHOWER
+   admin overlay + prompt
+   ========================================================================== */
+.admin-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(21, 19, 19, 0.35);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.admin-prompt {
+  background: var(--panel);
+  border: 1.5px solid rgba(63, 59, 58, 0.15);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: min(90vw, 280px);
+  text-align: center;
+}
+
+.admin-prompt-label {
+  margin: 0;
+  font-weight: 800;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  opacity: 0.5;
+}
+
+.admin-error {
+  margin: 0;
+  font-size: 0.82rem;
+  color: #c0392b;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   admin panel
+   ========================================================================== */
+.admin-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.admin-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.admin-exit-btn {
+  background: none;
+  border: none;
+  box-shadow: none;
+  font-size: 0.82rem;
+  font-weight: 700;
+  font-style: italic;
+  opacity: 0.45;
+  cursor: pointer;
+  padding: 4px 0;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  color: var(--ink);
+  transition: opacity 0.15s ease;
+}
+
+.admin-exit-btn:hover { opacity: 1; transform: none; box-shadow: none; background: none; }
+
+.admin-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-tab {
+  padding: 7px 14px;
+  border: 1.5px solid rgba(63, 59, 58, 0.2);
+  border-radius: 100px;
+  background: #fff;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  width: auto;
+  max-width: none;
+  margin: 0;
+  box-shadow: none;
+  color: var(--ink);
+}
+
+.admin-tab:hover { background: var(--green-soft); border-color: var(--green); transform: none; }
+.admin-tab.active { background: var(--green); color: #fff; border-color: var(--green); font-weight: 800; }
+
+.admin-section { width: 100%; }
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  max-width: 360px;
+  margin: 0 auto;
+}
+
+.checkbox-inline {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 10px !important;
+  justify-content: center;
+  font-size: 0.82rem !important;
+  opacity: 0.6;
+}
+
+.admin-success {
+  color: var(--green);
+  font-weight: 700;
+  font-size: 0.88rem;
+  margin: 0;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   metrics
+   ========================================================================== */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+.metric-card {
+  padding: 20px 16px;
+  border: 1.5px solid rgba(63, 59, 58, 0.1);
+  border-radius: var(--radius-sm);
+  background: #fff;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+
+.metric-card-wide { grid-column: 1 / -1; }
+
+.metric-value {
+  margin: 0 0 4px;
+  font-size: 2.2rem;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.metric-label {
+  margin: 0;
+  font-size: 0.72rem;
+  font-style: italic;
+  opacity: 0.5;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.tamer-breakdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+}
+
+.tamer-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--green-soft);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   error + empty states
+   ========================================================================== */
+.submit-error {
+  color: #c0392b;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin: 0;
+}
+
+.empty-state {
+  font-style: italic;
+  opacity: 0.45;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   resources placeholder
+   ========================================================================== */
+.resources-placeholder {
+  padding: 48px 0;
+  opacity: 0.4;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   cat shower
    ========================================================================== */
 .custom-cat-shower {
   position: fixed;
@@ -400,35 +708,35 @@ button[type="submit"]:disabled { opacity: 0.5; cursor: not-allowed; }
   left: 0;
   width: 100vw;
   height: 100vh;
-  pointer-events: none; /* Allows user to click things underneath smoothly */
-  z-index: 9999; /* Positions everything directly on top layer */
+  pointer-events: none;
+  z-index: 9999;
   overflow: hidden;
 }
 
 .falling-cat-guy {
   position: absolute;
-  top: -10%; /* Starts completely hidden above the viewport roof */
+  top: -10%;
   opacity: 0;
   user-select: none;
   animation: catRainAnimation linear forwards;
 }
 
-/* Rain physics: drops down from heaven while subtly rotating and fading in/out */
 @keyframes catRainAnimation {
-  0% {
-    top: -10%;
-    opacity: 0;
-    transform: translateX(0) rotate(0deg);
-  }
-  10% {
-    opacity: 1; /* Fade in quickly as it drops into view */
-  }
-  90% {
-    opacity: 1;
-  }
-  100% {
-    top: 110%; /* Fall all the way off the floor line */
-    opacity: 0; /* Smooth vanish exit */
-    transform: translateX(30px) rotate(var(--spin-deg)); /* Adds a slight side-drift and custom spin angle */
-  }
+  0%   { top: -10%; opacity: 0; transform: translateX(0) rotate(0deg); }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { top: 110%; opacity: 0; transform: translateX(30px) rotate(var(--spin-deg)); }
+}
+
+/* ==========================================================================
+   mobile
+   ========================================================================== */
+@media (max-width: 600px) {
+  .page { padding: 32px 12px 64px; }
+  .card { padding: 28px 20px 36px; }
+  .floating-nav-container { gap: 6px; }
+  .nav-tab { font-size: 0.78rem; padding: 8px 10px; }
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .admin-corner-btn { bottom: 12px; right: 12px; }
+  .graduation-card h2, .graduation-card h3 { font-size: 1.5rem; }
 }
