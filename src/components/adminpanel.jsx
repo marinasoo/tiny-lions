@@ -52,93 +52,114 @@ export default function AdminPanel({ GOOGLE_SCRIPT_URL, activeKittenOptions, isL
   }
 
   async function handleAddKitten(e) {
-    e.preventDefault();
-    setKittenSubmitting(true);
-    setKittenMessage(null);
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "newKitten",
-          kittenName: newKittenName,
-          description: newKittenDescription,
-          intakeDate: newKittenIntakeDate,
-          isGrouped: newKittenGrouped,
-          groupMembers: newKittenGroupMembers
-        })
-      });
-      const result = await response.json();
-      if (result.status === "success") {
-        setKittenMessage({ type: "success", text: `${newKittenName} has been added!` });
+      e.preventDefault();
+      setKittenSubmitting(true);
+      setKittenMessage(null);
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "newKitten",
+            kittenName: newKittenName,
+            description: newKittenDescription,
+            intakeDate: newKittenIntakeDate,
+            isGrouped: newKittenGrouped,
+            groupMembers: newKittenGroupMembers
+          })
+        });
+
+        setKittenMessage({
+          type: "success",
+          text: `${newKittenName} has been added!`
+        });
+
         setNewKittenName("");
         setNewKittenDescription("");
         setNewKittenIntakeDate(today());
         setNewKittenGrouped(false);
         setNewKittenGroupMembers("");
         onDataChange();
-      } else {
-        setKittenMessage({ type: "error", text: result.message });
-      }
-    } catch (err) {
-      setKittenMessage({ type: "error", text: "Could not reach the server." });
-    } finally {
-      setKittenSubmitting(false);
-    }
-  }
 
-  async function handleGraduate(e) {
-    e.preventDefault();
-    setGraduateSubmitting(true);
-    setGraduateMessage(null);
-    try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          type: "graduate",
-          kittenName: graduateKittenName
-        })
-      });
-      const result = await response.json();
-      if (result.status === "success") {
-        setGraduateMessage({ type: "success", text: `${graduateKittenName} has graduated! 🎓` });
+      } catch (err) {
+        console.error(err);
+        setKittenMessage({
+          type: "error",
+          text: "Could not reach the server."
+        });
+      } finally {
+        setKittenSubmitting(false);
+      }
+    }
+
+   async function handleGraduate(e) {
+      e.preventDefault();
+      setGraduateSubmitting(true);
+      setGraduateMessage(null);
+
+      try {
+        await fetch(GOOGLE_SCRIPT_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            type: "graduate",
+            kittenName: graduateKittenName
+          })
+        });
+
+        setGraduateMessage({
+          type: "success",
+          text: `${graduateKittenName} has graduated! 🎓`
+        });
+
         setGraduateKittenName("");
         onDataChange();
         fetchMetrics();
-      } else {
-        setGraduateMessage({ type: "error", text: result.message });
+
+      } catch (err) {
+        console.error(err);
+        setGraduateMessage({
+          type: "error",
+          text: "Could not reach the server."
+        });
+      } finally {
+        setGraduateSubmitting(false);
       }
-    } catch (err) {
-      setGraduateMessage({ type: "error", text: "Could not reach the server." });
-    } finally {
-      setGraduateSubmitting(false);
     }
-  }
 
   async function handleAddTamer(e) {
     e.preventDefault();
     setTamerSubmitting(true);
     setTamerMessage(null);
+
     try {
-      const response = await fetch(GOOGLE_SCRIPT_URL, {
+      await fetch(GOOGLE_SCRIPT_URL, {
         method: "POST",
+        mode: "no-cors",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           type: "newTamer",
           tamerName: newTamerName
         })
       });
-      const result = await response.json();
-      if (result.status === "success") {
-        setTamerMessage({ type: "success", text: `${newTamerName} has been added as a tamer!` });
-        setNewTamerName("");
-        onDataChange();
-      } else {
-        setTamerMessage({ type: "error", text: result.message });
-      }
+
+      setTamerMessage({
+        type: "success",
+        text: `${newTamerName} has been added as a tamer!`
+      });
+
+      setNewTamerName("");
+      onDataChange();
+
     } catch (err) {
-      setTamerMessage({ type: "error", text: "Could not reach the server." });
+      console.error(err);
+      setTamerMessage({
+        type: "error",
+        text: "Could not reach the server."
+      });
     } finally {
       setTamerSubmitting(false);
     }
@@ -181,7 +202,7 @@ export default function AdminPanel({ GOOGLE_SCRIPT_URL, activeKittenOptions, isL
               <MetricCard label={`kittens in ${new Date().getFullYear()}`} value={metrics.kittensThisYear} />
               <MetricCard
                 label="avg days to graduation"
-                value={metrics.averageDaysToGraduation !== null ? `${metrics.averageDaysToGraduation} days` : "—"}
+                value={metrics.averageDaysToGraduation !== null ? `${metrics.averageDaysToGraduation}` : "—"}
               />
               <MetricCard label="total sessions logged" value={metrics.totalSessions} />
 
@@ -210,7 +231,7 @@ export default function AdminPanel({ GOOGLE_SCRIPT_URL, activeKittenOptions, isL
         <div className="admin-section">
           <form onSubmit={handleAddKitten} className="admin-form">
             <label>
-              kitten name
+              KITTEN NAME
               <input
                 type="text"
                 value={newKittenName}
@@ -221,7 +242,7 @@ export default function AdminPanel({ GOOGLE_SCRIPT_URL, activeKittenOptions, isL
             </label>
 
             <label>
-              description
+              DESCRIPTION
               <input
                 type="text"
                 value={newKittenDescription}
@@ -231,7 +252,7 @@ export default function AdminPanel({ GOOGLE_SCRIPT_URL, activeKittenOptions, isL
             </label>
 
             <label>
-              date of intake
+              DATE OF INTAKE
               <input
                 type="date"
                 value={newKittenIntakeDate}
@@ -247,12 +268,12 @@ export default function AdminPanel({ GOOGLE_SCRIPT_URL, activeKittenOptions, isL
                 onChange={e => setNewKittenGrouped(e.target.checked)}
                 style={{ width: "auto", position: "static", opacity: 1 }}
               />
-              part of a group?
+              PART OF A GROUP?
             </label>
 
             {newKittenGrouped && (
               <label>
-                group members
+                GROUP MEMBERS
                 <input
                   type="text"
                   value={newKittenGroupMembers}

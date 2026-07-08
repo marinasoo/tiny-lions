@@ -33,6 +33,19 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
     return () => window.clearInterval(interval);
   }, [isGraduated]);
 
+   const behaviorLabels = {
+    "Hisses": "hisses",
+    "Hides": "hides",
+    "Eats from Chopstick": "chopstick",
+    "Eats from Finger": "finger",
+    "Approaches with Encouragement": "approach - encouraged",
+    "Approaches Freely": "approach - freely",
+    "Stays Up Front": "stays up front",
+    "Plays": "plays",
+    "Can Pet": "can pet",
+    "Can Pick Up or Hold": "can pick up",
+  };
+
   async function handleLookup(event) {
     event.preventDefault();
     if (!selectedKitten) return;
@@ -72,9 +85,7 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
     <>
       <form onSubmit={handleLookup} className="status-form">
         <p className="intro-copy">
-          Check in on past behavior sessions for a kitten — good to do before
-          you start a session. You can also look up graduated kittens to see
-          their full journey.
+          Check in on past behavior sessions for a kitten.
         </p>
 
         <label
@@ -138,7 +149,7 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
                 <>
                   <p className="field-title" style={{ marginTop: "24px" }}>session history</p>
                   {historyLogs.map((session, index) => (
-                    <SessionCard key={index} session={session} />
+                    <SessionCard key={index} session={session} behaviorLabels={behaviorLabels} />
                   ))}
                 </>
               )}
@@ -147,7 +158,7 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
             <p className="empty-state">no recorded sessions found</p>
           ) : (
             historyLogs.map((session, index) => (
-              <SessionCard key={index} session={session} />
+              <SessionCard key={index} session={session} behaviorLabels={behaviorLabels} />
             ))
           )}
         </div>
@@ -156,7 +167,7 @@ export default function CheckStatus({ kittenOptions, isLoadingOptions, GOOGLE_SC
   );
 }
 
-function SessionCard({ session }) {
+function SessionCard({ session, behaviorLabels }) {
   return (
     <article className="history-card">
       <div className="history-card-header">
@@ -170,7 +181,7 @@ function SessionCard({ session }) {
         ) : (
           <div>
             {session.behaviors.map((b, i) => (
-              <span key={i}>{b}</span>
+              <span key={i}>{behaviorLabels[b] || b}</span>
             ))}
           </div>
         )}

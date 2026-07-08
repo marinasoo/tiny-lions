@@ -6,7 +6,7 @@ import BehaviorLog from "./components/behaviorlog";
 import CheckStatus from "./components/checkstatus";
 import AdminPanel from "./components/adminpanel";
 
-const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzkiu_tGW2I7HjhTy_sTPZL3JrY9lmLxNiSaEZPrVX_3bLpHq2vfUSVqKKt0lxm8WKJww/exec";
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbziFeuD7x0Qqd2inFoaLZdqT-xZbjgIVkVefZf5iaSAoDs47YhNI21CNSNbOs6WHwWR/exec";
 const ADMIN_PASSWORD = "kittenparty";
 
 function App() {
@@ -144,7 +144,11 @@ function App() {
         onClick={handleAdminClick}
         aria-label="Admin panel"
       >
-        ⚙
+        <img
+          src="/asaplogo.png"
+          alt=""
+          className="admin-corner-logo"
+        />
       </button>
 
       <section className="app-shell" aria-label="Tiny Lions workspace">
